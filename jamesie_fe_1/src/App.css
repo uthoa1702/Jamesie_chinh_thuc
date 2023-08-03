@@ -1,0 +1,39 @@
+.jamesie{
+
+}
+@media (min-width: 1200px){
+    .container {
+        max-width: 1500px !important;
+    }
+}
+
+
+.fixed-header-top-0 {
+    background-color: #ffffff; /* Đặt màu nền khi top = 0 */
+    /* Thêm bất kỳ kiểu định dạng nào khác cho header khi top = 0 */
+    position: fixed;
+    z-index: 1100;
+    top: 0;
+    width: 100%;
+    height: 84px;
+}
+
+.panel-search{
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+
+}
+.show {
+    /* Hiển thị mục khi searchVisible = true */
+    opacity: 1;
+    max-height: 100px; /* Đặt giá trị max-height phù hợp với nội dung của mục */
+}
+
+.hide {
+    /* Ẩn mục khi searchVisible = false */
+    opacity: 0;
+    max-height: 0;
+}
+
