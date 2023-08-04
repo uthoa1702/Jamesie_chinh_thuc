@@ -37,3 +37,46 @@
     max-height: 0;
 }
 
+.section-slide .carousel-indicators{
+    display: none !important;
+}
+
+.custom-slide {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+.custom-slide.active {
+    opacity: 1;
+    z-index: 1;
+}
+
+.carousel-inner {
+    position: relative;
+}
+
+.carousel-inner .carousel-item {
+    transition: transform 1s ease-in-out;
+}
+
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item.active {
+    display: block;
+}
+
+.carousel-item-next {
+    transform: translateX(100%);
+}
+
+.carousel-item-prev {
+    transform: translateX(-100%);
+}
+
+.carousel-item-next.active,
+.carousel-item-prev.active {
+    transform: translateX(0);
+}

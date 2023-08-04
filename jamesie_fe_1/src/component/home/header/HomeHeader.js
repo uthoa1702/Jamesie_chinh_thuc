@@ -14,10 +14,12 @@ import '../vendor/daterangepicker/daterangepicker.css'
 import '../vendor/bootstrap/css/bootstrap.min.css'
 import {Link, NavLink} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {toast} from "react-toastify";
 
 
 export const HomeHeader = () => {
     const [isTop, setIsTop] = useState(true);
+    const [username, setUsername] = useState('');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -31,6 +33,17 @@ export const HomeHeader = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+
+    useEffect(() => {
+        setUsername(localStorage.getItem('username'))
+    },[localStorage.getItem("username")])
+
+    const logOut = async () => {
+        localStorage.removeItem("token")
+        localStorage.removeItem("username")
+        await setUsername('')
+        toast.success("Log out successfully")
+    }
     return (
 
 
@@ -49,9 +62,14 @@ export const HomeHeader = () => {
                                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                                     Help &amp; FAQs
                                 </a>
-                                <Link  className="flex-c-m trans-04 p-lr-25" to='/login'>
-                                    My Account
-                                </Link>
+                                {
+                                    username ? <Link onClick={()=>logOut()} style={{color:'#b2b2b2'}} className="flex-c-m trans-04 p-lr-25" to='/login'>
+                                        {username}
+                                    </Link> : <Link className="flex-c-m trans-04 p-lr-25" to='/login'>
+                                        My Account
+                                    </Link>
+                                }
+
                                 <a href="#" className="flex-c-m trans-04 p-lr-25">
                                     EN
                                 </a>
@@ -67,7 +85,7 @@ export const HomeHeader = () => {
                 <div className="wrap-header-mobile">
                     {/* Logo moblie */}
                     <div className="logo-mobile logo ">
-                        <Link  to='/'>
+                        <Link to='/'>
 
                             <img src="/anh/LOGOJAMESIE.png" alt="IMG-LOGO"/>
                         </Link>
@@ -78,18 +96,15 @@ export const HomeHeader = () => {
                             <i className="zmdi zmdi-search"/>
                         </div>
                         <Link to='/shopping-cart'>
-                        <div
-                            className="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
-                            data-notify={2}
-                        >
+                            <div
+                                className="icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-l-10 icon-header-noti js-show-cart"
+                                data-notify={2}
+                            >
 
                                 <i className="zmdi zmdi-shopping-cart"/>
 
 
-
-
-
-                        </div>
+                            </div>
                         </Link>
                         <a
                             href="#"
@@ -168,7 +183,7 @@ export const HomeHeader = () => {
                     </div>
                 </div>
             </header>
-            <div style={{}}  className={` ${isTop ? 'wrap-menu-desktop ' : 'fixed-header-top-0'}`}>
+            <div style={{}} className={` ${isTop ? 'wrap-menu-desktop ' : 'fixed-header-top-0 '}`}>
                 <nav className="limiter-menu-desktop container justify-content-between">
                     {/* Logo desktop */}
 
@@ -176,8 +191,8 @@ export const HomeHeader = () => {
                     <div className="menu-desktop col-4">
                         <ul className="main-menu">
 
-                            <li >
-                                <a  href="product.html">Shop</a>
+                            <li>
+                                <a href="product.html">Shop</a>
                             </li>
 
                             <li>

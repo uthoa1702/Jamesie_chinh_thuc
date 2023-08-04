@@ -1,45 +1,52 @@
 import React from "react";
-import {Carousel} from "react-bootstrap";
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import {Carousel, CarouselItem} from "react-bootstrap";
+import {Link} from "react-router-dom";
 
 
 export const Body = () => {
 
-        const settings = {
-            dots: true,
-            infinite: true,
-            speed: 500,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            fade: true
-            // Để thay đổi hiệu ứng chuyển ảnh, bạn có thể sử dụng các options sau:
-            // Đối với hiệu ứng slide: 'slide', 'fade', 'slide-in', 'slide-out',...
-            // Đối với hiệu ứng fade: 'fade', 'fade-in', 'fade-out',...
-            // Bạn có thể tùy chỉnh hiệu ứng và các thuộc tính khác theo tài liệu của react-slick.
-            // Ví dụ:
-            // effect: 'fade',
-        };
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        fade: true,
+
+        // Để thay đổi hiệu ứng chuyển ảnh, bạn có thể sử dụng các options sau:
+        // Đối với hiệu ứng slide: 'slide', 'fade', 'slide-in', 'slide-out',...
+        // Đối với hiệu ứng fade: 'fade', 'fade-in', 'fade-out',...
+        // Bạn có thể tùy chỉnh hiệu ứng và các thuộc tính khác theo tài liệu của react-slick.
+        // Ví dụ:
+        // effect: 'fade',
+    };
     return (
 
         <>
-            <section className="section-slide">
-                <div className="wrap-slick1 rs1-slick1">
-                    <div className="slick1">
 
-                        <Slider {...settings}>
+
+            <section className="section-slide">
+                <div className="  wrap-slick1 rs1-slick1">
+                    <div className="">
+                        <Carousel interval={2000} fade
+                        >
+
+                            <CarouselItem className='slider1 '>
                                 <div
-                                    className="item-slick1 bg-img1 slider1"
+                                    className="item-slick1 bg-img1  slick1"
                                 >
+
+
                                     <div className="container h-full">
                                         <div className="flex-col-l-m h-full p-t-100 p-b-30">
                                             <div
                                                 data-appear="fadeInDown"
                                             >
-                <span className="ltext-202 cl2 respon2">
-                  New Collection 2023
-                </span>
+                                            <span className="ltext-202 cl2 respon2">
+                                              New Collection 2023
+                                            </span>
                                             </div>
                                             <div
                                             >
@@ -49,81 +56,88 @@ export const Body = () => {
                                             </div>
                                             <div
                                             >
-                                                <a
-                                                    href="product.html"
-                                                    className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                                                >
-                                                    Shop Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    className="item-slick1 bg-img1 slider2"
-                                >
-                                    <div className="container h-full">
-                                        <div className="flex-col-l-m h-full p-t-100 p-b-30">
-                                            <div
-                                            >
-                <span className="ltext-202 cl2 respon2">
-                  New Collection 2023
-                </span>
-                                            </div>
-                                            <div
-                                            >
-                                                <h2 className="ltext-104 cl2 p-t-19 p-b-43 respon1">
-                                                    New arrivals
-                                                </h2>
-                                            </div>
-                                            <div
-                                            >
-                                                <a
-                                                    href="product.html"
-                                                    className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                                                >
-                                                    Shop Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    className="item-slick1 bg-img1 slider3"
-                                >
-                                    <div className="container h-full">
-                                        <div className="flex-col-l-m h-full p-t-100 p-b-30">
-                                            <div
-                                            >
-                <span className="ltext-202 cl2 respon2">
-                  New Collection 2023
-                </span>
-                                            </div>
-                                            <div
-                                            >
-                                                <h2 className="ltext-104 cl2 p-t-19 p-b-43 respon1">
-                                                    New arrivals
-                                                </h2>
-                                            </div>
-                                            <div
-                                            >
-                                                <a
-                                                    href="product.html"
-                                                    className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
-                                                >
-                                                    Shop Now
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </Slider>
+                                                <Link
 
+                                                    className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
+                                                 to='/product'>
+                                                    Shop Now
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                            <CarouselItem className=" slider2 custom-slide ">
+                                <div
+                                    className="item-slick1 bg-img1 "
+                                >
+                                    <div className="container h-full">
+                                        <div className="flex-col-l-m h-full p-t-100 p-b-30">
+                                            <div
+                                            >
+                <span className="ltext-202 cl2 respon2">
+                  New Collection 2023
+                </span>
+                                            </div>
+                                            <div
+                                            >
+                                                <h2 className="ltext-104 cl2 p-t-19 p-b-43 respon1">
+                                                    New arrivals
+                                                </h2>
+                                            </div>
+                                            <div
+                                            >
+                                                <Link
+
+                                                    className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
+                                                    to='/product'>
+                                                    Shop Now
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                            <CarouselItem className=" slider3 custom-slide">
+
+                                <div
+                                    className="item-slick1 bg-img1 "
+                                >
+                                    <div className="container h-full">
+                                        <div className="flex-col-l-m h-full p-t-100 p-b-30">
+                                            <div
+                                            >
+                <span className="ltext-202 cl2 respon2">
+                  New Collection 2023
+                </span>
+                                            </div>
+                                            <div
+                                            >
+                                                <h2 className="ltext-104 cl2 p-t-19 p-b-43 respon1">
+                                                    New arrivals
+                                                </h2>
+                                            </div>
+                                            <div
+                                            >
+                                                <Link
+
+                                                    className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04"
+                                                    to='/product'>
+                                                    Shop Now
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                        </Carousel>
 
 
                     </div>
                 </div>
             </section>
+
+
             <div className='container'>
 
                 {/* Banner */}
@@ -192,9 +206,6 @@ export const Body = () => {
                     </div>
                 </div>
             </div>
-
-
-
 
 
         </>
