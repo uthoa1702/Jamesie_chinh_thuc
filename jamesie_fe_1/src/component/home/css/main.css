@@ -3099,8 +3099,8 @@ max-height: 100%;
 /*---------------------------------------------*/
 .hov-btn1:hover {
   border-color: #222;
-  background-color: #222;
-  color: #fff;
+  background-color: #797979;
+  color: #ffffff;
 }
 
 .hov-btn1:hover i {

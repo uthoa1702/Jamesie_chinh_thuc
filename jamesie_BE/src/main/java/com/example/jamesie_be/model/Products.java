@@ -23,7 +23,7 @@ public class Products {
     private String name;
 
     @Column(nullable = false)
-    private Long price;
+    private Double price;
 
     @Column(nullable = false)
     private Long amount;
@@ -74,7 +74,7 @@ public class Products {
         this.id = id;
     }
 
-    public Products(String name, Long price, Long amount, String image1, String image2, String image3, String description, Boolean gender, ProductColor productColor, ProductSize productSize, ProductType productType) {
+    public Products(String name, Double price, Long amount, String image1, String image2, String image3, String description, Boolean gender, ProductColor productColor, ProductSize productSize, ProductType productType) {
         this.name = name;
         this.price = price;
         this.amount = amount;
@@ -88,7 +88,7 @@ public class Products {
         this.productType = productType;
     }
 
-    public Products(Long id, String name, Long price, Long amount, String image1, String image2, String image3, String description, LocalDateTime createTime, LocalDateTime updateTime, boolean isDelete, Boolean gender, ProductColor productColor, ProductSize productSize, ProductType productType) {
+    public Products(Long id, String name, Double price, Long amount, String image1, String image2, String image3, String description, LocalDateTime createTime, LocalDateTime updateTime, boolean isDelete, Boolean gender, ProductColor productColor, ProductSize productSize, ProductType productType) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -122,11 +122,11 @@ public class Products {
         this.name = name;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

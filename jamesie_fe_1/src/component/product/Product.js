@@ -1,18 +1,42 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Modal from 'react-modal';
 import {Detail} from "../detail/Detail";
+import * as productService from '../service/ProductService'
 
 
 export const Product = () => {
     const [filter, setFilter] = useState(false);
-    const [search, setSearch ] = useState(false);
+    const [search, setSearch] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const openModal = () => {
+    const [products, setProduct] = useState([])
+    const [page, setPage] = useState(0)
+    const [detail, setDetail] = useState('')
+
+
+    const getList = async () => {
+        try {
+            const res = await productService.getList(page)
+            await setProduct(res.content)
+            console.log("data neeee "+res.content)
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    useEffect(() => {
+    getList()
+    },[page])
+
+    const openModal = (name) => {
         setIsModalOpen(true);
+        setDetail(name)
+
     };
 
     const closeModal = () => {
         setIsModalOpen(false);
+        setDetail('')
     };
     /*==================================================================
 
@@ -83,26 +107,31 @@ export const Product = () => {
                         <div className="flex-w flex-c-m m-tb-10">
                             <div
                                 className="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 "
-                                onClick={()=> showFilter()}>
+                                onClick={() => showFilter()}>
                                 <div>
 
                                     {
-                                        filter ? <div>  <i className="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"/> Filter</div>  :  <div> <i className="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"/> Filter</div>
+                                        filter ? <div><i
+                                            className="icon-close-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"/> Filter
+                                        </div> : <div><i
+                                            className="icon-filter cl2 m-r-6 fs-15 trans-04 zmdi zmdi-filter-list"/> Filter
+                                        </div>
 
                                     }
-
-
-
 
 
                                 </div>
 
                             </div>
-                            <a  onClick={showSearch}
-                                className="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 ">
+                            <a onClick={showSearch}
+                               className="flex-c-m stext-106 cl6 size-105 bor4 pointer hov-btn3 trans-04 m-tb-4 ">
                                 <div>
                                     {
-                                        search ? <div><i className="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"/> Search </div> :  <div> <i  className="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"/> Search </div>
+                                        search ? <div><i
+                                            className="icon-close-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-close dis-none"/> Search
+                                        </div> : <div><i
+                                            className="icon-search cl2 m-r-6 fs-15 trans-04 zmdi zmdi-search"/> Search
+                                        </div>
 
                                     }
 
@@ -115,17 +144,17 @@ export const Product = () => {
                         {
                             search &&
                             <div className={` panel-search ${search ? 'show w-full p-t-10 p-b-15' : 'hide'}`}>
-                            <div className="bor8 dis-flex p-l-15">
-                            <button className="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-                            <i className="zmdi zmdi-search"/>
-                            </button>
-                            <input
-                            className="mtext-107 cl2 size-114 plh2 p-r-15"
-                            type="text"
-                            name="search-product"
-                            placeholder="Search"
-                            />
-                            </div>
+                                <div className="bor8 dis-flex p-l-15">
+                                    <button className="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                                        <i className="zmdi zmdi-search"/>
+                                    </button>
+                                    <input
+                                        className="mtext-107 cl2 size-114 plh2 p-r-15"
+                                        type="text"
+                                        name="search-product"
+                                        placeholder="Search"
+                                    />
+                                </div>
                             </div>
                         }
                         {/* Filter */}
@@ -317,91 +346,59 @@ export const Product = () => {
 
                     </div>
                     <div className="row isotope-grid">
-                        <div className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                            {/* Block2 */}
-                            <div className="block2">
-                                <div className="block2-pic hov-img0">
-                                    <img src="images/product-01.jpg" alt="IMG-PRODUCT"/>
-                                    <a
-                                        onClick={openModal}
-                                        className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                                    >
-                                        Quick View
-                                    </a>
-                                </div>
-                                <div className="block2-txt flex-w flex-t p-t-14">
-                                    <div className="block2-txt-child1 flex-col-l ">
-                                        <a
-                                            href="product-detail.html"
-                                            className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                                        >
-                                            Esprit Ruffle Shirt
-                                        </a>
-                                        <span className="stext-105 cl3">$16.64</span>
+                    {
+                        products && products.map((value, index) => (
+
+
+
+                            <div onClick={() => openModal(value.name)} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women" key={index}>
+                                    {/* Block2 */}
+                                    <div className="block2">
+                                        <div className="block2-pic hov-img0">
+                                            <img src={value.image1} alt="IMG-PRODUCT"/>
+
+                                        </div>
+                                        <div className="block2-txt flex-w flex-t p-t-14">
+                                            <div className="block2-txt-child1 flex-col-l ">
+                                                <a onClick={() => openModal(value.name)} href={''} style={{color:'black', fontSize:'20px'}}
+                                                    className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
+                                                >
+                                                    {value.name}
+                                                </a>
+                                                <span className="stext-105 cl3">{value.price}</span>
+                                            </div>
+                                            <div className="block2-txt-child2 flex-r p-t-3">
+                                                <a
+                                                    href="#"
+                                                    className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
+                                                >
+                                                    <img
+                                                        className="icon-heart1 dis-block trans-04"
+                                                        src="images/icons/icon-heart-01.png"
+                                                        alt="ICON"
+                                                    />
+                                                    <img
+                                                        className="icon-heart2 dis-block trans-04 ab-t-l"
+                                                        src="images/icons/icon-heart-02.png"
+                                                        alt="ICON"
+                                                    />
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="block2-txt-child2 flex-r p-t-3">
-                                        <a
-                                            href="#"
-                                            className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                                        >
-                                            <img
-                                                className="icon-heart1 dis-block trans-04"
-                                                src="images/icons/icon-heart-01.png"
-                                                alt="ICON"
-                                            />
-                                            <img
-                                                className="icon-heart2 dis-block trans-04 ab-t-l"
-                                                src="images/icons/icon-heart-02.png"
-                                                alt="ICON"
-                                            />
-                                        </a>
-                                    </div>
-                                </div>
+
                             </div>
-                        </div>
-                        <div className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women">
-                            {/* Block2 */}
-                            <div className="block2">
-                                <div className="block2-pic hov-img0">
-                                    <img src="images/product-02.jpg" alt="IMG-PRODUCT"/>
-                                    <a
-                                        href="#"
-                                        className="block2-btn flex-c-m stext-103 cl2 size-102 bg0 bor2 hov-btn1 p-lr-15 trans-04 js-show-modal1"
-                                    >
-                                        Quick View
-                                    </a>
-                                </div>
-                                <div className="block2-txt flex-w flex-t p-t-14">
-                                    <div className="block2-txt-child1 flex-col-l ">
-                                        <a
-                                            href="product-detail.html"
-                                            className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                                        >
-                                            Herschel supply
-                                        </a>
-                                        <span className="stext-105 cl3">$35.31</span>
-                                    </div>
-                                    <div className="block2-txt-child2 flex-r p-t-3">
-                                        <a
-                                            href="#"
-                                            className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                                        >
-                                            <img
-                                                className="icon-heart1 dis-block trans-04"
-                                                src="images/icons/icon-heart-01.png"
-                                                alt="ICON"
-                                            />
-                                            <img
-                                                className="icon-heart2 dis-block trans-04 ab-t-l"
-                                                src="images/icons/icon-heart-02.png"
-                                                alt="ICON"
-                                            />
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
+
+
+                            )
+
+                         )
+                    }
                     </div>
+
+
+
                 </div>
             </div>
             <Modal
@@ -415,7 +412,138 @@ export const Product = () => {
             >
 
 
-                        <Detail/>
+                <div className="bg0  p-b-30 p-lr-15-lg how-pos3-parent">
+                    <button className="how-pos3 hov3 trans-04 js-hide-modal1">
+                        <img src="images/icons/icon-close.png" alt="CLOSE" />
+                    </button>
+                    <div className="row">
+                        <div className="col-md-6 col-lg-7 p-b-30">
+                            <div className="p-l-25 p-r-30 p-lr-0-lg">
+                                <div className="wrap-slick3 flex-sb flex-w">
+                                
+                                    <div className="wrap-slick3-arrows flex-sb-m flex-w" />
+                                    <div className="slick3 gallery-lb">
+                                        <div
+                                            className="item-slick3"
+
+                                        >
+                                            <div className="wrap-pic-w pos-relative">
+                                                <img src={products.find((value)=>value.name === detail)?.image1} alt="IMG-PRODUCT" />
+                                                <a
+                                                    className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+
+                                                >
+                                                    <i className="fa fa-expand" />
+                                                </a>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6 col-lg-5 ">
+                            <div className="p-r-50 p-t-5 p-lr-0-lg">
+                                <h4 className="mtext-105 cl2 js-name-detail p-b-14">
+                                    {products.find((value)=>value.name === detail)?.name}
+                                </h4>
+                                <span className="mtext-106 cl2">${products.find((value)=>value.name === detail)?.price}</span>
+                                <p className="stext-102 cl3 p-t-23">
+                                    Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus
+                                    ligula. Mauris consequat ornare feugiat.
+                                </p>
+                                {/*  */}
+                                <div className="p-t-33">
+                                    <div className="flex-w flex-r-m p-b-10">
+                                        <div className="size-203 flex-c-m respon6">Size</div>
+                                        <div className="size-204 respon6-next">
+                                            <div className="rs1-select2 bor8 bg0">
+                                                <select className="js-select2" name="time">
+                                                    <option>Choose an option</option>
+                                                    <option>Size S</option>
+                                                    <option>Size M</option>
+                                                    <option>Size L</option>
+                                                    <option>Size XL</option>
+                                                </select>
+                                                <div className="dropDownSelect2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex-w flex-r-m p-b-10">
+                                        <div className="size-203 flex-c-m respon6">Color</div>
+                                        <div className="size-204 respon6-next">
+                                            <div className="rs1-select2 bor8 bg0">
+                                                <select className="js-select2" name="time">
+                                                    <option>Choose an option</option>
+                                                    <option>Red</option>
+                                                    <option>Blue</option>
+                                                    <option>White</option>
+                                                    <option>Grey</option>
+                                                </select>
+                                                <div className="dropDownSelect2" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="flex-w flex-r-m p-b-10">
+                                        <div className="size-204 flex-w flex-m respon6-next">
+                                            <div className="wrap-num-product flex-w m-r-20 m-tb-10">
+                                                <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                    <i className="fs-16 zmdi zmdi-minus" />
+                                                </div>
+                                                <input
+                                                    className="mtext-104 cl3 txt-center num-product"
+                                                    type="number"
+                                                    name="num-product"
+                                                    defaultValue={1}
+                                                />
+                                                <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                    <i className="fs-16 zmdi zmdi-plus" />
+                                                </div>
+                                            </div>
+                                            <button className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                                Add to cart
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/*  */}
+                                <div className="flex-w flex-m p-l-100 p-t-40 respon7">
+                                    <div className="flex-m bor9 p-r-10 m-r-11">
+                                        <a
+                                            href="#"
+                                            className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
+                                            data-tooltip="Add to Wishlist"
+                                        >
+                                            <i className="zmdi zmdi-favorite" />
+                                        </a>
+                                    </div>
+                                    <a
+                                        href="#"
+                                        className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                        data-tooltip="Facebook"
+                                    >
+                                        <i className="fa fa-facebook" />
+                                    </a>
+                                    <a
+                                        href="#"
+                                        className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                        data-tooltip="Twitter"
+                                    >
+                                        <i className="fa fa-twitter" />
+                                    </a>
+                                    <a
+                                        href="#"
+                                        className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
+                                        data-tooltip="Google Plus"
+                                    >
+                                        <i className="fa fa-google-plus" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </Modal>
 
