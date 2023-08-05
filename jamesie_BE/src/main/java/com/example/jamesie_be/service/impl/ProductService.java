@@ -15,10 +15,15 @@ public class ProductService implements IProductService {
     ProductRepository iProductRepository;
 
     @Override
-    public Page<ProductDTO> getProductsPage(Pageable pageable) {
-        Page<IProductDTO> iProductDTOS = iProductRepository.getProducts(pageable);
+    public Page<ProductDTO> getProductsPage(Pageable pageable, String sortBy, double from, double to, String color, String type, String productName) {
+        Page<IProductDTO> iProductDTOS = iProductRepository.getProducts(pageable, from, to,"%" + color + "%" ,"%" + type + "%" ,"%" + productName + "%");
 
         return transformDTO(iProductDTOS);
+    }
+
+    @Override
+    public Double getMaxPrice() {
+        return iProductRepository.getMaxPrice();
     }
 
     public static Page<ProductDTO> transformDTO(Page<IProductDTO> iProductDTOS) {

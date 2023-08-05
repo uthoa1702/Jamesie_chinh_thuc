@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Modal from 'react-modal';
-import {Detail} from "../detail/Detail";
 import * as productService from '../service/ProductService'
+import {NavLink} from "react-router-dom";
 
 
 export const Product = () => {
@@ -11,13 +11,27 @@ export const Product = () => {
     const [products, setProduct] = useState([])
     const [page, setPage] = useState(0)
     const [detail, setDetail] = useState('')
+    const [sortBy, setSortBy] = useState('')
+    const [price, setPrice] = useState('')
+    const [color, setColor] = useState('')
+    const [type, setType] = useState('')
+    const [productName, setProductName] = useState('')
 
+
+    const getLowToHigh = async () => {
+        try {
+            await setSortBy('lowToHigh')
+            await getList()
+        } catch (e) {
+            console.log(e)
+        }
+    }
 
     const getList = async () => {
         try {
-            const res = await productService.getList(page)
+            const res = await productService.getList(page, sortBy, price, color, type, productName)
             await setProduct(res.content)
-            console.log("data neeee "+res.content)
+            console.log("data neeee " + res.content)
 
         } catch (e) {
             console.log(e)
@@ -25,8 +39,8 @@ export const Product = () => {
     }
 
     useEffect(() => {
-    getList()
-    },[page])
+        getList()
+    }, [page, price, sortBy, productName, type, color])
 
     const openModal = (name) => {
         setIsModalOpen(true);
@@ -38,6 +52,8 @@ export const Product = () => {
         setIsModalOpen(false);
         setDetail('')
     };
+
+
     /*==================================================================
 
         [ Filter / Search product ]*/
@@ -73,18 +89,7 @@ export const Product = () => {
                             >
                                 All Products
                             </button>
-                            <button
-                                className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-                                data-filter=".women"
-                            >
-                                Women
-                            </button>
-                            <button
-                                className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-                                data-filter=".men"
-                            >
-                                Men
-                            </button>
+
                             <button
                                 className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
                                 data-filter=".bag"
@@ -101,7 +106,7 @@ export const Product = () => {
                                 className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
                                 data-filter=".watches"
                             >
-                                Watches
+                                Accessories
                             </button>
                         </div>
                         <div className="flex-w flex-c-m m-tb-10">
@@ -165,37 +170,49 @@ export const Product = () => {
                                         <div className="mtext-102 cl2 p-b-15">Sort By</div>
                                         <ul>
                                             <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Default
-                                                </a>
+                                                {
+                                                    sortBy === "" ? <NavLink onClick={() => setSortBy('')}
+                                                                             className="  filter-link-active filter-link stext-106 trans-04"
+                                                                             to='#'>
+                                                            Default
+                                                        </NavLink>
+                                                        : <NavLink onClick={() => setSortBy('')} href='#'
+                                                                   className=" filter-link   stext-106 trans-04"
+                                                                   to={'#'}>
+                                                            Default
+                                                        </NavLink>
+                                                }
+
+                                            </li>
+
+
+                                            <li className="p-b-6">
+
+                                                {
+                                                    sortBy === "lowToHigh" ?
+                                                        <NavLink onClick={() => setSortBy('lowToHigh')} href="#"
+                                                                 className="filter-link-active filter-link stext-106 trans-04">
+                                                            Price: Low to High
+                                                        </NavLink>
+                                                        : <NavLink onClick={() => setSortBy('lowToHigh')} href="#"
+                                                                   className="filter-link stext-106 trans-04">
+                                                            Price: Low to High
+                                                        </NavLink>
+                                                }
                                             </li>
                                             <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Popularity
-                                                </a>
-                                            </li>
-                                            <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Average rating
-                                                </a>
-                                            </li>
-                                            <li className="p-b-6">
-                                                <a
-                                                    href="#"
-                                                    className="filter-link stext-106 trans-04 filter-link-active"
-                                                >
-                                                    Newness
-                                                </a>
-                                            </li>
-                                            <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Price: Low to High
-                                                </a>
-                                            </li>
-                                            <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Price: High to Low
-                                                </a>
+                                                {
+                                                    sortBy === "highToLow" ?
+                                                        <NavLink onClick={() => setSortBy('highToLow')} href="#"
+                                                                 className="filter-link-active filter-link stext-106 trans-04">
+                                                            Price: High to Low
+                                                        </NavLink>
+                                                        : <NavLink onClick={() => setSortBy('highToLow')} href="#"
+                                                                   className="filter-link stext-106 trans-04">
+                                                            Price: High to Low
+                                                        </NavLink>
+                                                }
+
                                             </li>
                                         </ul>
                                     </div>
@@ -203,87 +220,136 @@ export const Product = () => {
                                         <div className="mtext-102 cl2 p-b-15">Price</div>
                                         <ul>
                                             <li className="p-b-6">
-                                                <a
-                                                    href="#"
-                                                    className="filter-link stext-106 trans-04 filter-link-active"
-                                                >
-                                                    All
-                                                </a>
+                                                {
+                                                    price === '' ? <NavLink
+                                                        onClick={() => setPrice('')}
+
+                                                        className="filter-link stext-106 trans-04 filter-link-active"
+                                                    >
+                                                        All
+                                                    </NavLink> : <NavLink
+                                                        onClick={() => setPrice('')}
+
+                                                        className="filter-link stext-106 trans-04 "
+                                                    >
+                                                        All
+                                                    </NavLink>
+                                                }
+
                                             </li>
                                             <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    $0.00 - $50.00
-                                                </a>
+
+                                                {
+                                                    price === '0-50' ? <NavLink
+                                                        onClick={() => setPrice('0-50')}
+
+                                                        className="filter-link stext-106 trans-04 filter-link-active"
+                                                    >
+                                                        $0.00 - $50.00
+                                                    </NavLink> : <NavLink
+                                                        onClick={() => setPrice('0-50')}
+
+                                                        className="filter-link stext-106 trans-04 "
+                                                    >
+                                                        $0.00 - $50.00
+                                                    </NavLink>
+                                                }
                                             </li>
                                             <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    $50.00 - $100.00
-                                                </a>
+
+                                                {
+                                                    price === '50-100' ? <NavLink
+                                                        onClick={() => setPrice('50-100')}
+
+                                                        className="filter-link stext-106 trans-04 filter-link-active"
+                                                    >
+                                                        $50.00 - $100.00
+                                                    </NavLink> : <NavLink
+                                                        onClick={() => setPrice('50-100')}
+
+                                                        className="filter-link stext-106 trans-04 "
+                                                    >
+                                                        $50.00 - $100.00
+                                                    </NavLink>
+                                                }
                                             </li>
                                             <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    $100.00 - $150.00
-                                                </a>
+
+
+                                                {
+                                                    price === '100' ? <NavLink
+                                                        onClick={() => setPrice('100')}
+
+                                                        className="filter-link stext-106 trans-04 filter-link-active"
+                                                    >
+                                                        $100.00+
+                                                    </NavLink> : <NavLink
+                                                        onClick={() => setPrice('100')}
+
+                                                        className="filter-link stext-106 trans-04 "
+                                                    >
+                                                        $100.00+
+                                                    </NavLink>
+                                                }
                                             </li>
-                                            <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    $150.00 - $200.00
-                                                </a>
-                                            </li>
-                                            <li className="p-b-6">
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    $200.00+
-                                                </a>
-                                            </li>
+
                                         </ul>
                                     </div>
                                     <div className="filter-col3 p-r-15 p-b-27">
                                         <div className="mtext-102 cl2 p-b-15">Color</div>
                                         <ul>
                                             <li className="p-b-6">
+                <span className="fs-15 lh-12 m-r-6" style={{color: "rgba(34,34,34,0)"}}>
+                  <i className="zmdi zmdi-circle"/>
+                </span>
+                                                {
+                                                    color === '' ?
+                                                        <NavLink onClick={() => setColor('')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                            All
+                                                        </NavLink>
+                                                        :
+
+                                                        <NavLink onClick={() => setColor('')} className="filter-link stext-106 trans-04" to='#'>
+                                                            All
+                                                        </NavLink>
+                                                }
+
+                                            </li>
+                                            <li className="p-b-6">
                 <span className="fs-15 lh-12 m-r-6" style={{color: "#222"}}>
                   <i className="zmdi zmdi-circle"/>
                 </span>
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Black
-                                                </a>
+                                                {
+                                                    color === 'black' ?
+                                                        <NavLink onClick={() => setColor('black')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                            Black
+                                                        </NavLink>
+                                                        :
+
+                                                        <NavLink onClick={() => setColor('black')} className="filter-link stext-106 trans-04" to='#'>
+                                                            Black
+                                                        </NavLink>
+                                                }
+
                                             </li>
+
                                             <li className="p-b-6">
-                <span
-                    className="fs-15 lh-12 m-r-6"
-                    style={{color: "#4272d7"}}
-                >
-                  <i className="zmdi zmdi-circle"/>
+                <span className="fs-15 lh-12 m-r-6" style={{color: "#aaa"}}>
+                  <i className="zmdi zmdi-circle-o"/>
                 </span>
-                                                <a
-                                                    href="#"
-                                                    className="filter-link stext-106 trans-04 filter-link-active"
-                                                >
-                                                    Blue
-                                                </a>
+                                                {
+                                                    color === 'white' ?
+                                                        <NavLink onClick={() => setColor('white')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                            White
+                                                        </NavLink>
+                                                        :
+
+                                                        <NavLink onClick={() => setColor('white')} className="filter-link stext-106 trans-04" to='#'>
+                                                            White
+                                                        </NavLink>
+                                                }
                                             </li>
-                                            <li className="p-b-6">
-                <span
-                    className="fs-15 lh-12 m-r-6"
-                    style={{color: "#b3b3b3"}}
-                >
-                  <i className="zmdi zmdi-circle"/>
-                </span>
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Grey
-                                                </a>
-                                            </li>
-                                            <li className="p-b-6">
-                <span
-                    className="fs-15 lh-12 m-r-6"
-                    style={{color: "#00ad5f"}}
-                >
-                  <i className="zmdi zmdi-circle"/>
-                </span>
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Green
-                                                </a>
-                                            </li>
+
                                             <li className="p-b-6">
                 <span
                     className="fs-15 lh-12 m-r-6"
@@ -291,34 +357,35 @@ export const Product = () => {
                 >
                   <i className="zmdi zmdi-circle"/>
                 </span>
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    Red
-                                                </a>
+                                                {
+                                                    color === 'red' ?
+                                                        <NavLink onClick={() => setColor('red')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                            Red
+                                                        </NavLink>
+                                                        :
+
+                                                        <NavLink onClick={() => setColor('red')} className="filter-link stext-106 trans-04" to='#'>
+                                                            Red
+                                                        </NavLink>
+                                                }
                                             </li>
-                                            <li className="p-b-6">
-                <span className="fs-15 lh-12 m-r-6" style={{color: "#aaa"}}>
-                  <i className="zmdi zmdi-circle-o"/>
-                </span>
-                                                <a href="#" className="filter-link stext-106 trans-04">
-                                                    White
-                                                </a>
-                                            </li>
+
                                         </ul>
                                     </div>
                                     <div className="filter-col4 p-b-27">
-                                        <div className="mtext-102 cl2 p-b-15">Tags</div>
+                                        <div className="mtext-102 cl2 p-b-15">Types</div>
                                         <div className="flex-w p-t-4 m-r--5">
                                             <a
                                                 href="#"
                                                 className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
                                             >
-                                                Fashion
+                                                T-Shirt
                                             </a>
                                             <a
                                                 href="#"
                                                 className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
                                             >
-                                                Lifestyle
+                                                Shirt
                                             </a>
                                             <a
                                                 href="#"
@@ -330,13 +397,13 @@ export const Product = () => {
                                                 href="#"
                                                 className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
                                             >
-                                                Streetstyle
+                                                Short
                                             </a>
                                             <a
                                                 href="#"
                                                 className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
                                             >
-                                                Crafts
+                                                Jacket
                                             </a>
                                         </div>
                                     </div>
@@ -346,57 +413,57 @@ export const Product = () => {
 
                     </div>
                     <div className="row isotope-grid">
-                    {
-                        products && products.map((value, index) => (
+                        {
+                            products && products.map((value, index) => (
 
 
+                                    <div onClick={() => openModal(value.name)}
+                                         className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women" key={index}>
+                                        {/* Block2 */}
+                                        <div className="block2">
+                                            <div className="block2-pic hov-img0 "
+                                            >
+                                                <img src={value.image1} alt="IMG-PRODUCT"/>
 
-                            <div onClick={() => openModal(value.name)} className="col-sm-6 col-md-4 col-lg-3 p-b-35 isotope-item women" key={index}>
-                                    {/* Block2 */}
-                                    <div className="block2">
-                                        <div className="block2-pic hov-img0">
-                                            <img src={value.image1} alt="IMG-PRODUCT"/>
 
-                                        </div>
-                                        <div className="block2-txt flex-w flex-t p-t-14">
-                                            <div className="block2-txt-child1 flex-col-l ">
-                                                <a onClick={() => openModal(value.name)} href={''} style={{color:'black', fontSize:'20px'}}
-                                                    className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
-                                                >
-                                                    {value.name}
-                                                </a>
-                                                <span className="stext-105 cl3">{value.price}</span>
                                             </div>
-                                            <div className="block2-txt-child2 flex-r p-t-3">
-                                                <a
-                                                    href="#"
-                                                    className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
-                                                >
-                                                    <img
-                                                        className="icon-heart1 dis-block trans-04"
-                                                        src="images/icons/icon-heart-01.png"
-                                                        alt="ICON"
-                                                    />
-                                                    <img
-                                                        className="icon-heart2 dis-block trans-04 ab-t-l"
-                                                        src="images/icons/icon-heart-02.png"
-                                                        alt="ICON"
-                                                    />
-                                                </a>
+                                            <div className="block2-txt flex-w flex-t p-t-14">
+                                                <div className="block2-txt-child1 flex-col-l ">
+                                                    <a onClick={() => openModal(value.name)} href={''}
+                                                       style={{color: 'black', fontSize: '20px'}}
+                                                       className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
+                                                    >
+                                                        {value.name}
+                                                    </a>
+                                                    <span className="stext-105 cl3">{value.price}</span>
+                                                </div>
+                                                <div className="block2-txt-child2 flex-r p-t-3">
+                                                    <a
+                                                        href="#"
+                                                        className="btn-addwish-b2 dis-block pos-relative js-addwish-b2"
+                                                    >
+                                                        <img
+                                                            className="icon-heart1 dis-block trans-04"
+                                                            src="images/icons/icon-heart-01.png"
+                                                            alt="ICON"
+                                                        />
+                                                        <img
+                                                            className="icon-heart2 dis-block trans-04 ab-t-l"
+                                                            src="images/icons/icon-heart-02.png"
+                                                            alt="ICON"
+                                                        />
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
 
-                            </div>
 
-
-
+                                )
                             )
-
-                         )
-                    }
+                        }
                     </div>
-
 
 
                 </div>
@@ -414,26 +481,27 @@ export const Product = () => {
 
                 <div className="bg0  p-b-30 p-lr-15-lg how-pos3-parent">
                     <button className="how-pos3 hov3 trans-04 js-hide-modal1">
-                        <img src="images/icons/icon-close.png" alt="CLOSE" />
+                        <img src="images/icons/icon-close.png" alt="CLOSE"/>
                     </button>
                     <div className="row">
                         <div className="col-md-6 col-lg-7 p-b-30">
                             <div className="p-l-25 p-r-30 p-lr-0-lg">
                                 <div className="wrap-slick3 flex-sb flex-w">
-                                
-                                    <div className="wrap-slick3-arrows flex-sb-m flex-w" />
+
+                                    <div className="wrap-slick3-arrows flex-sb-m flex-w"/>
                                     <div className="slick3 gallery-lb">
                                         <div
                                             className="item-slick3"
 
                                         >
                                             <div className="wrap-pic-w pos-relative">
-                                                <img src={products.find((value)=>value.name === detail)?.image1} alt="IMG-PRODUCT" />
+                                                <img src={products.find((value) => value.name === detail)?.image1}
+                                                     alt="IMG-PRODUCT"/>
                                                 <a
                                                     className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
 
                                                 >
-                                                    <i className="fa fa-expand" />
+                                                    <i className="fa fa-expand"/>
                                                 </a>
                                             </div>
                                         </div>
@@ -446,9 +514,10 @@ export const Product = () => {
                         <div className="col-md-6 col-lg-5 ">
                             <div className="p-r-50 p-t-5 p-lr-0-lg">
                                 <h4 className="mtext-105 cl2 js-name-detail p-b-14">
-                                    {products.find((value)=>value.name === detail)?.name}
+                                    {products.find((value) => value.name === detail)?.name}
                                 </h4>
-                                <span className="mtext-106 cl2">${products.find((value)=>value.name === detail)?.price}</span>
+                                <span
+                                    className="mtext-106 cl2">${products.find((value) => value.name === detail)?.price}</span>
                                 <p className="stext-102 cl3 p-t-23">
                                     Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus
                                     ligula. Mauris consequat ornare feugiat.
@@ -466,7 +535,7 @@ export const Product = () => {
                                                     <option>Size L</option>
                                                     <option>Size XL</option>
                                                 </select>
-                                                <div className="dropDownSelect2" />
+                                                <div className="dropDownSelect2"/>
                                             </div>
                                         </div>
                                     </div>
@@ -481,7 +550,7 @@ export const Product = () => {
                                                     <option>White</option>
                                                     <option>Grey</option>
                                                 </select>
-                                                <div className="dropDownSelect2" />
+                                                <div className="dropDownSelect2"/>
                                             </div>
                                         </div>
                                     </div>
@@ -489,7 +558,7 @@ export const Product = () => {
                                         <div className="size-204 flex-w flex-m respon6-next">
                                             <div className="wrap-num-product flex-w m-r-20 m-tb-10">
                                                 <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i className="fs-16 zmdi zmdi-minus" />
+                                                    <i className="fs-16 zmdi zmdi-minus"/>
                                                 </div>
                                                 <input
                                                     className="mtext-104 cl3 txt-center num-product"
@@ -498,10 +567,11 @@ export const Product = () => {
                                                     defaultValue={1}
                                                 />
                                                 <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i className="fs-16 zmdi zmdi-plus" />
+                                                    <i className="fs-16 zmdi zmdi-plus"/>
                                                 </div>
                                             </div>
-                                            <button className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                            <button
+                                                className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
                                                 Add to cart
                                             </button>
                                         </div>
@@ -515,7 +585,7 @@ export const Product = () => {
                                             className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 js-addwish-detail tooltip100"
                                             data-tooltip="Add to Wishlist"
                                         >
-                                            <i className="zmdi zmdi-favorite" />
+                                            <i className="zmdi zmdi-favorite"/>
                                         </a>
                                     </div>
                                     <a
@@ -523,21 +593,21 @@ export const Product = () => {
                                         className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
                                         data-tooltip="Facebook"
                                     >
-                                        <i className="fa fa-facebook" />
+                                        <i className="fa fa-facebook"/>
                                     </a>
                                     <a
                                         href="#"
                                         className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
                                         data-tooltip="Twitter"
                                     >
-                                        <i className="fa fa-twitter" />
+                                        <i className="fa fa-twitter"/>
                                     </a>
                                     <a
                                         href="#"
                                         className="fs-14 cl3 hov-cl1 trans-04 lh-10 p-lr-5 p-tb-2 m-r-8 tooltip100"
                                         data-tooltip="Google Plus"
                                     >
-                                        <i className="fa fa-google-plus" />
+                                        <i className="fa fa-google-plus"/>
                                     </a>
                                 </div>
                             </div>
