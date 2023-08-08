@@ -9,6 +9,7 @@ export const Product = () => {
     const [search, setSearch] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [products, setProduct] = useState([])
+    const [images, setImages] = useState([])
     const [page, setPage] = useState(0)
     const [detail, setDetail] = useState('')
     const [sortBy, setSortBy] = useState('')
@@ -16,16 +17,10 @@ export const Product = () => {
     const [color, setColor] = useState('')
     const [type, setType] = useState('')
     const [productName, setProductName] = useState('')
+    const [url, setUrl] = useState('')
 
 
-    const getLowToHigh = async () => {
-        try {
-            await setSortBy('lowToHigh')
-            await getList()
-        } catch (e) {
-            console.log(e)
-        }
-    }
+
 
     const getList = async () => {
         try {
@@ -42,9 +37,18 @@ export const Product = () => {
         getList()
     }, [page, price, sortBy, productName, type, color])
 
-    const openModal = (name) => {
-        setIsModalOpen(true);
-        setDetail(name)
+    const openModal = async (name) => {
+        try {
+
+            await setIsModalOpen(true);
+            await setDetail(name)
+            const res = await productService.getImage(name)
+            await setImages(res.data)
+            await setUrl(res.data[0].url)
+
+        } catch (e) {
+            console.log(e)
+        }
 
     };
 
@@ -73,7 +77,7 @@ export const Product = () => {
             top: '50%', // Đặt vị trí top theo giữa màn hình
             left: '50%', // Đặt vị trí left theo giữa màn hình
             transform: 'translate(-50%, -50%)', // Dịch chuyển modal để căn giữa
-            width: '70%', // Đặt chiều rộng của modal
+            width: '90%', // Đặt chiều rộng của modal
             height: '70%', // Đặt chiều cao của modal
         },
     };
@@ -304,12 +308,15 @@ export const Product = () => {
                 </span>
                                                 {
                                                     color === '' ?
-                                                        <NavLink onClick={() => setColor('')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('')}
+                                                                 className="filter-link filter-link-active stext-106 trans-04"
+                                                                 to='#'>
                                                             All
                                                         </NavLink>
                                                         :
 
-                                                        <NavLink onClick={() => setColor('')} className="filter-link stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('')}
+                                                                 className="filter-link stext-106 trans-04" to='#'>
                                                             All
                                                         </NavLink>
                                                 }
@@ -321,12 +328,15 @@ export const Product = () => {
                 </span>
                                                 {
                                                     color === 'black' ?
-                                                        <NavLink onClick={() => setColor('black')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('black')}
+                                                                 className="filter-link filter-link-active stext-106 trans-04"
+                                                                 to='#'>
                                                             Black
                                                         </NavLink>
                                                         :
 
-                                                        <NavLink onClick={() => setColor('black')} className="filter-link stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('black')}
+                                                                 className="filter-link stext-106 trans-04" to='#'>
                                                             Black
                                                         </NavLink>
                                                 }
@@ -339,12 +349,15 @@ export const Product = () => {
                 </span>
                                                 {
                                                     color === 'white' ?
-                                                        <NavLink onClick={() => setColor('white')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('white')}
+                                                                 className="filter-link filter-link-active stext-106 trans-04"
+                                                                 to='#'>
                                                             White
                                                         </NavLink>
                                                         :
 
-                                                        <NavLink onClick={() => setColor('white')} className="filter-link stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('white')}
+                                                                 className="filter-link stext-106 trans-04" to='#'>
                                                             White
                                                         </NavLink>
                                                 }
@@ -359,12 +372,15 @@ export const Product = () => {
                 </span>
                                                 {
                                                     color === 'red' ?
-                                                        <NavLink onClick={() => setColor('red')}  className="filter-link filter-link-active stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('red')}
+                                                                 className="filter-link filter-link-active stext-106 trans-04"
+                                                                 to='#'>
                                                             Red
                                                         </NavLink>
                                                         :
 
-                                                        <NavLink onClick={() => setColor('red')} className="filter-link stext-106 trans-04" to='#'>
+                                                        <NavLink onClick={() => setColor('red')}
+                                                                 className="filter-link stext-106 trans-04" to='#'>
                                                             Red
                                                         </NavLink>
                                                 }
@@ -423,7 +439,7 @@ export const Product = () => {
                                         <div className="block2">
                                             <div className="block2-pic hov-img0 "
                                             >
-                                                <img src={value.image1} alt="IMG-PRODUCT"/>
+                                                <img src={value.url} alt="IMG-PRODUCT"/>
 
 
                                             </div>
@@ -479,12 +495,64 @@ export const Product = () => {
             >
 
 
-                <div className="bg0  p-b-30 p-lr-15-lg how-pos3-parent">
+                <div className="bg0   p-lr-15-lg how-pos3-parent">
                     <button className="how-pos3 hov3 trans-04 js-hide-modal1">
                         <img src="images/icons/icon-close.png" alt="CLOSE"/>
                     </button>
                     <div className="row">
-                        <div className="col-md-6 col-lg-7 p-b-30">
+                        <div className="ProductItem-gallery-scroll col-lg-1">
+                            <div
+                                aria-label="Gallery thumbnails"
+                                className="ProductItem-gallery-thumbnails"
+                                data-animation-role="image"
+                                role="group"
+                            >
+                                {
+                                    images && images.map((value) => (
+                                        <div
+                                            className="ProductItem-gallery-thumbnails-item loaded"
+                                            style={{minHeight: "5rem", cursor: "pointer"}}
+                                            onClick={() => setUrl(value.url)}
+
+                                        >
+                                            <img
+                                                className="ProductItem-gallery-thumbnails-item-image"
+                                                data-load="false"
+                                                data-src="https://images.squarespace-cdn.com/content/v1/624b503d84c2ba7dc187a92a/1649102915518-M77C3POWQPXXO63QKUZ9/ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
+                                                data-image="https://images.squarespace-cdn.com/content/v1/624b503d84c2ba7dc187a92a/1649102915518-M77C3POWQPXXO63QKUZ9/ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
+                                                data-image-dimensions="1600x1600"
+                                                data-image-focal-point="0.5,0.5"
+                                                alt="ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
+                                                style={{
+                                                    // width: "100%",
+                                                    // height: "100%",
+                                                    objectPosition: "50% 50%",
+                                                    objectFit: "cover"
+                                                }}
+                                                data-parent-ratio="0.7"
+                                                data-image-resolution="100w"
+                                                src={value.url}
+                                            />
+
+                                        </div>
+                                        )
+                                    )
+                                }
+                                
+
+
+
+
+
+
+
+
+
+
+                            </div>
+                        </div>
+
+                        <div className="col-md-6 col-lg-6 ">
                             <div className="p-l-25 p-r-30 p-lr-0-lg">
                                 <div className="wrap-slick3 flex-sb flex-w">
 
@@ -495,7 +563,7 @@ export const Product = () => {
 
                                         >
                                             <div className="wrap-pic-w pos-relative">
-                                                <img src={products.find((value) => value.name === detail)?.image1}
+                                                <img src={url}
                                                      alt="IMG-PRODUCT"/>
                                                 <a
                                                     className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
@@ -511,7 +579,7 @@ export const Product = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-md-6 col-lg-5 ">
+                        <div className="col-md-5 col-lg-5 ">
                             <div className="p-r-50 p-t-5 p-lr-0-lg">
                                 <h4 className="mtext-105 cl2 js-name-detail p-b-14">
                                     {products.find((value) => value.name === detail)?.name}

@@ -18,17 +18,21 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
             "                p.description AS description,\n" +
             "                p.image1      AS image1,\n" +
             "                p.image2      AS image2,\n" +
-            "                p.image3      AS image3\n" +
-            "\n" +
+            "                p.image3      AS image3,\n" +
+            "                I.url         AS url \n" +
             "FROM products p\n" +
             "         INNER JOIN product_color PC ON p.product_color_id = PC.id\n" +
             "         INNER JOIN product_type PT ON p.product_type_id = PT.id\n" +
+            "INNER JOIN images I ON p.id = I.product_id\n" +
             "WHERE p.is_delete = FALSE\n" +
             "  AND p.amount > 0\n" +
             "  AND price BETWEEN :from AND :to\n" +
-            "  AND PC.name like :color \n" +
-            "  AND PT.name like :type\n" +
-            "  AND p.name LIKE :productName", nativeQuery = true)
+            "  AND PC.name LIKE :color \n" +
+            "  AND PT.name LIKE :type\n" +
+            "  AND p.name LIKE :productName\n" +
+            "AND I.id IN (SELECT MIN(images.id) AS image1\n" +
+            "               FROM images\n" +
+            "               GROUP BY images.product_id)", nativeQuery = true)
     Page<IProductDTO> getProducts(Pageable pageable,
 
                                   @Param("from") double from,
@@ -43,4 +47,7 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
             "WHERE is_delete = FALSE\n" +
             "  AND amount > 0", nativeQuery = true)
     Double getMaxPrice();
+
+
+
 }

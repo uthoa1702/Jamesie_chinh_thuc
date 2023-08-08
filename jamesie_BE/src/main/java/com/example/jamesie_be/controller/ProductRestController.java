@@ -1,7 +1,9 @@
 package com.example.jamesie_be.controller;
 
+import com.example.jamesie_be.model.DTO.IImageDTO;
+import com.example.jamesie_be.model.DTO.ImageDTO;
 import com.example.jamesie_be.model.DTO.ProductDTO;
-import com.example.jamesie_be.model.Products;
+import com.example.jamesie_be.model.Images;
 import com.example.jamesie_be.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,11 +12,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin("*")
@@ -84,6 +85,18 @@ public class ProductRestController {
         return new ResponseEntity<>(productDTOPage, HttpStatus.OK);
 
 
+    }
+
+    @PostMapping("/images")
+    public ResponseEntity<List<ImageDTO>> getImages(@RequestBody String productName ){
+        List<IImageDTO> imagesList = iProductService.getImages(productName);
+        List<ImageDTO> imageDTOList = new ArrayList<>();
+        for (int i = 0; i < imagesList.size(); i++) {
+            ImageDTO imageDTO = new ImageDTO();
+            imageDTO.setUrl(imagesList.get(i).getUrl());
+            imageDTOList.add(imageDTO);
+        }
+        return new ResponseEntity<>(imageDTOList, HttpStatus.OK);
     }
 
 }

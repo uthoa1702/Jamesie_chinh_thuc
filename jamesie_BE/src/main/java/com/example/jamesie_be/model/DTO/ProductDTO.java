@@ -1,6 +1,8 @@
 package com.example.jamesie_be.model.DTO;
 
 
+import java.util.List;
+
 public class ProductDTO {
     private String color;
 
@@ -20,6 +22,8 @@ public class ProductDTO {
 
 
     private String image3;
+
+    private String url;
 
 
     private String description;
@@ -102,6 +106,26 @@ public class ProductDTO {
         this.image1 = image1;
         this.image2 = image2;
         this.image3 = image3;
+        this.description = description;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public ProductDTO(String color, String name, Double price, Long amount, String image1, String image2, String image3, String url, String description) {
+        this.color = color;
+        this.name = name;
+        this.price = price;
+        this.amount = amount;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.url = url;
         this.description = description;
     }
 

@@ -23,6 +23,7 @@ public interface IProductDTO {
 
 
     String getDescription();
+    String getUrl();
 
 
 }
