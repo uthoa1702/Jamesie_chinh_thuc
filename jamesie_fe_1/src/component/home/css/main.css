@@ -2642,7 +2642,7 @@ input.num-product::-webkit-inner-spin-button {
 ==================================================================*/
 .bg-none {background-color: transparent;}
 .bg0 {background-color: #fff;}
-.bg1 {background-color: #717fe0;}
+.bg1 {background-color: #000000;}
 .bg2 {background-color: #e6e6e6;}
 .bg3 {background-color: #222;}
 .bg5 {background-color: rgba(0,0,0,0.5);}
@@ -3116,9 +3116,9 @@ max-height: 100%;
 
 /*---------------------------------------------*/
 .hov-btn3:hover {
-  border-color: #717fe0;
-  background-color: #717fe0;
-  color: #fff;
+  border-color: #222;
+  background-color: #797979;
+  color: #ffffff;
 }
 
 .hov-btn3:hover i {

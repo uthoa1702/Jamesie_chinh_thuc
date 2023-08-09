@@ -80,3 +80,7 @@
 .carousel-item-prev.active {
     transform: translateX(0);
 }
+
+span{
+    color: red;
+}

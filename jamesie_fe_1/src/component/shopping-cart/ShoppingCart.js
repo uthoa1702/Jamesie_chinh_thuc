@@ -1,8 +1,21 @@
-
-
-
+import {useEffect, useState} from "react";
+import * as shoppingCartService from '../service/ShoppingCartService'
 
 export const ShoppingCart = () => {
+    const [listProduct , setListProduct] = useState([])
+
+    const getList = async () => {
+        try {
+            const res = await shoppingCartService.getList(localStorage.getItem("username"))
+            await setListProduct(res)
+        }catch (e) {
+            console.log(e)
+        }
+    }
+    useEffect(() => {
+        getList()
+    },[])
+
     return(
         <>
             <form className="bg0 p-t-75 p-b-85">
@@ -16,62 +29,49 @@ export const ShoppingCart = () => {
                                         <tr className="table_head">
                                             <th className="column-1">Product</th>
                                             <th className="column-2" />
-                                            <th className="column-3">Price</th>
+                                            <th className="column-3">Size</th>
                                             <th className="column-4">Quantity</th>
-                                            <th className="column-5">Total</th>
+
+                                            <th className="column-5">Price</th>
+                                            <th className="column-6">Total</th>
                                         </tr>
-                                        <tr className="table_row">
-                                            <td className="column-1">
-                                                <div className="how-itemcart1">
-                                                    <img src="images/item-cart-04.jpg" alt="IMG" />
-                                                </div>
-                                            </td>
-                                            <td className="column-2">Fresh Strawberries</td>
-                                            <td className="column-3">$ 36.00</td>
-                                            <td className="column-4">
-                                                <div className="wrap-num-product flex-w m-l-auto m-r-0">
-                                                    <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                        <i className="fs-16 zmdi zmdi-minus" />
-                                                    </div>
-                                                    <input
-                                                        className="mtext-104 cl3 txt-center num-product"
-                                                        type="number"
-                                                        name="num-product1"
-                                                        defaultValue={1}
-                                                    />
-                                                    <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                        <i className="fs-16 zmdi zmdi-plus" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="column-5">$ 36.00</td>
-                                        </tr>
-                                        <tr className="table_row">
-                                            <td className="column-1">
-                                                <div className="how-itemcart1">
-                                                    <img src="images/item-cart-05.jpg" alt="IMG" />
-                                                </div>
-                                            </td>
-                                            <td className="column-2">Lightweight Jacket</td>
-                                            <td className="column-3">$ 16.00</td>
-                                            <td className="column-4">
-                                                <div className="wrap-num-product flex-w m-l-auto m-r-0">
-                                                    <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                        <i className="fs-16 zmdi zmdi-minus" />
-                                                    </div>
-                                                    <input
-                                                        className="mtext-104 cl3 txt-center num-product"
-                                                        type="number"
-                                                        name="num-product2"
-                                                        defaultValue={1}
-                                                    />
-                                                    <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                        <i className="fs-16 zmdi zmdi-plus" />
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className="column-5">$ 16.00</td>
-                                        </tr>
+
+                                        {
+                                            listProduct && listProduct.map(value => (
+                                                <tr className="table_row">
+                                                    <td className="column-1">
+                                                        <div className="how-itemcart1">
+                                                            <img src={value.products.image1} alt="IMG" />
+                                                        </div>
+                                                    </td>
+                                                    <td className="column-2">{value.products.name}</td>
+                                                    <td className="column-3"> {value.products.productSize.name}</td>
+
+                                                    <td className="column-4">
+                                                        <div className="wrap-num-product flex-w m-l-auto m-r-0">
+                                                            <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                                <i className="fs-16 zmdi zmdi-minus" />
+                                                            </div>
+                                                            <input
+                                                                className="mtext-104 cl3 txt-center num-product"
+                                                                type="number"
+                                                                name="num-product1"
+                                                                value={value.amount}
+                                                            />
+                                                            <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                                <i className="fs-16 zmdi zmdi-plus" />
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="column-5">$ {value.products.price}</td>
+                                                    <td className="column-6">$ {value.amount * value.products.price}</td>
+                                                </tr>
+                                            ))
+                                        }
+
+
+
+
                                         </tbody>
                                     </table>
                                 </div>

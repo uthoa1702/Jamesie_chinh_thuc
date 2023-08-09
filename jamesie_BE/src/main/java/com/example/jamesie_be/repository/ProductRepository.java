@@ -48,6 +48,13 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
             "  AND amount > 0", nativeQuery = true)
     Double getMaxPrice();
 
+    Products findByName(String name);
 
+    @Query(value = "SELECT *\n" +
+            "FROM products AS p\n" +
+            "WHERE name = :name\n" +
+            "  AND product_size_id = :id\n" +
+            "  AND is_delete = FALSE", nativeQuery = true)
+    Products findByNameAndProductSize(@Param("name") String name, @Param("id") Long id);
 
 }

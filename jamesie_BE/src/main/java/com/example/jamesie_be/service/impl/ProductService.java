@@ -3,9 +3,11 @@ package com.example.jamesie_be.service.impl;
 import com.example.jamesie_be.model.DTO.IImageDTO;
 import com.example.jamesie_be.model.DTO.IProductDTO;
 import com.example.jamesie_be.model.DTO.ProductDTO;
-import com.example.jamesie_be.model.Images;
-import com.example.jamesie_be.repository.IImageRepository;
-import com.example.jamesie_be.repository.ProductRepository;
+
+import com.example.jamesie_be.model.ProductSize;
+import com.example.jamesie_be.model.ProductType;
+import com.example.jamesie_be.model.Products;
+import com.example.jamesie_be.repository.*;
 import com.example.jamesie_be.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,13 +19,19 @@ import java.util.List;
 @Service
 public class ProductService implements IProductService {
     @Autowired
-    ProductRepository iProductRepository;
+    private ProductRepository iProductRepository;
     @Autowired
-    IImageRepository iImageRepository;
+    private IImageRepository iImageRepository;
+
+    @Autowired
+    private ISizeRepository iSizeRepository;
+
+    @Autowired
+    private IProductTypeRepository iProductTypeRepository;
 
     @Override
     public Page<ProductDTO> getProductsPage(Pageable pageable, String sortBy, double from, double to, String color, String type, String productName) {
-        Page<IProductDTO> iProductDTOS = iProductRepository.getProducts(pageable, from, to,"%" + color + "%" ,"%" + type + "%" ,"%" + productName + "%");
+        Page<IProductDTO> iProductDTOS = iProductRepository.getProducts(pageable, from, to, "%" + color + "%", "%" + type + "%", "%" + productName + "%");
 
         return transformDTO(iProductDTOS);
     }
@@ -36,6 +44,31 @@ public class ProductService implements IProductService {
     @Override
     public List<IImageDTO> getImages(String id) {
         return iImageRepository.getImages(id);
+    }
+
+    @Override
+    public List<ProductSize> getSize(String productName) {
+        return iSizeRepository.getSize(productName);
+    }
+
+    @Override
+    public List<ProductType> getType() {
+        return iProductTypeRepository.findAll();
+    }
+
+    @Override
+    public Products findByName(String name) {
+        return iProductRepository.findByName(name);
+    }
+
+    @Override
+    public Products findByNameAndSize(String name, Long sizeId) {
+        return iProductRepository.findByNameAndProductSize(name,sizeId);
+    }
+
+    @Override
+    public void save(Products products) {
+        iProductRepository.save(products);
     }
 
     public static Page<ProductDTO> transformDTO(Page<IProductDTO> iProductDTOS) {
@@ -53,6 +86,5 @@ public class ProductService implements IProductService {
             productDTO.setUrl(iProductDTO.getUrl());
             return productDTO;
         });
-
     }
 }

@@ -1,6 +1,15 @@
 import axios from "axios";
 import {almostWhole} from "chart.js/helpers";
 
+export async function getType() {
+    try {
+        const res = await axios.get("http://localhost:8080/products/getType")
+        return res.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
 
 export const getList = async (page, sortBy, price, color, type, productName) => {
 
@@ -23,6 +32,24 @@ export const getImage = async (name) => {
             'Content-Type': 'text/plain' // Set the Content-Type header to indicate the raw data format
         }})
         return res
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+export const getSize = async (name) => {
+    try {
+        const res = await axios.get("http://localhost:8080/products/getSize?productName=" + name)
+        return res.data
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+export const addToCart = async (productName,size, username, quantity) => {
+    try {
+        return  await axios.post("http://localhost:8080/shopping/add?size=" + size + "&productName=" + productName + "&username=" + username + "&quantity=" + quantity)
+
     }catch (e) {
         console.log(e)
     }

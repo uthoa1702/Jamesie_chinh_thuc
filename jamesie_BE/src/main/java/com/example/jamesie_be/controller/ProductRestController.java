@@ -4,6 +4,9 @@ import com.example.jamesie_be.model.DTO.IImageDTO;
 import com.example.jamesie_be.model.DTO.ImageDTO;
 import com.example.jamesie_be.model.DTO.ProductDTO;
 import com.example.jamesie_be.model.Images;
+import com.example.jamesie_be.model.ProductColor;
+import com.example.jamesie_be.model.ProductSize;
+import com.example.jamesie_be.model.ProductType;
 import com.example.jamesie_be.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -97,6 +100,20 @@ public class ProductRestController {
             imageDTOList.add(imageDTO);
         }
         return new ResponseEntity<>(imageDTOList, HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/getSize")
+    public ResponseEntity<List<ProductSize>> getSize(@RequestParam("productName")String productName) {
+        List<ProductSize> productSizes = iProductService.getSize(productName);
+        return new ResponseEntity<>(productSizes, HttpStatus.OK);
+    }
+
+    @GetMapping("/getType")
+    public ResponseEntity<List<ProductType>> getType() {
+        List<ProductType> productType = iProductService.getType();
+        return new ResponseEntity<>(productType, HttpStatus.OK);
     }
 
 }

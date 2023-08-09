@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import Modal from 'react-modal';
 import * as productService from '../service/ProductService'
 import {NavLink} from "react-router-dom";
+import {ErrorMessage, Field, Form, Formik} from "formik";
+import * as yup from 'yup'
+import {toast} from "react-toastify";
 
 
 export const Product = () => {
@@ -15,17 +18,25 @@ export const Product = () => {
     const [sortBy, setSortBy] = useState('')
     const [price, setPrice] = useState('')
     const [color, setColor] = useState('')
+    const [types, setTypes] = useState([])
     const [type, setType] = useState('')
     const [productName, setProductName] = useState('')
     const [url, setUrl] = useState('')
 
+    const [size, setSize] = useState([])
 
+    const [chooseSize, setChooseSize] = useState(0)
+    const [chooseQuantity, setChooseQuantity] = useState(1)
+    const [resultAdd, setResultAdd] = useState('')
 
 
     const getList = async () => {
         try {
             const res = await productService.getList(page, sortBy, price, color, type, productName)
             await setProduct(res.content)
+
+            const typess = await productService.getType()
+            await setTypes(typess)
             console.log("data neeee " + res.content)
 
         } catch (e) {
@@ -35,7 +46,16 @@ export const Product = () => {
 
     useEffect(() => {
         getList()
-    }, [page, price, sortBy, productName, type, color])
+    }, [page, price, sortBy, productName, type, color, chooseSize, chooseQuantity])
+
+    const minus = () => {
+        if (chooseQuantity <= 1) {
+            setChooseQuantity(chooseQuantity)
+        } else {
+            setChooseQuantity(chooseQuantity - 1)
+        }
+
+    }
 
     const openModal = async (name) => {
         try {
@@ -45,6 +65,9 @@ export const Product = () => {
             const res = await productService.getImage(name)
             await setImages(res.data)
             await setUrl(res.data[0].url)
+            const getSize = await productService.getSize(name)
+            await setSize(getSize)
+            console.log(getSize)
 
         } catch (e) {
             console.log(e)
@@ -55,6 +78,10 @@ export const Product = () => {
     const closeModal = () => {
         setIsModalOpen(false);
         setDetail('')
+        setUrl('')
+        setImages([])
+        setChooseQuantity(1)
+        setChooseSize(0)
     };
 
 
@@ -63,11 +90,16 @@ export const Product = () => {
         [ Filter / Search product ]*/
 
     const showFilter = () => {
+        setProductName('')
         setFilter(!filter)
         setSearch(false)
     }
 
     const showSearch = () => {
+        setType('')
+        setColor('')
+        setPrice('')
+        setSortBy('')
         setSearch(!search)
         setFilter(false)
     }
@@ -153,16 +185,27 @@ export const Product = () => {
                         {
                             search &&
                             <div className={` panel-search ${search ? 'show w-full p-t-10 p-b-15' : 'hide'}`}>
-                                <div className="bor8 dis-flex p-l-15">
-                                    <button className="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
-                                        <i className="zmdi zmdi-search"/>
-                                    </button>
-                                    <input
-                                        className="mtext-107 cl2 size-114 plh2 p-r-15"
-                                        type="text"
-                                        name="search-product"
-                                        placeholder="Search"
-                                    />
+                                <div className="">
+                                    <Formik initialValues={{
+                                        search: productName
+                                    }} onSubmit={values => {
+                                        setProductName(values.search)
+                                    }}>
+                                        <Form className="bor8 dis-flex p-l-15" style={{width: '100%'}}>
+
+                                            <Field
+                                                className="mtext-107 cl2 size-114 plh2 p-r-15"
+                                                type="text"
+                                                name="search"
+                                                placeholder="Search by name of product"
+                                            />
+                                            <button type='submit'
+                                                    className="size-113 flex-c-m fs-16 cl2 hov-cl1 trans-04">
+                                                <i className="zmdi zmdi-search"/>
+                                            </button>
+                                        </Form>
+                                    </Formik>
+
                                 </div>
                             </div>
                         }
@@ -391,36 +434,18 @@ export const Product = () => {
                                     <div className="filter-col4 p-b-27">
                                         <div className="mtext-102 cl2 p-b-15">Types</div>
                                         <div className="flex-w p-t-4 m-r--5">
-                                            <a
-                                                href="#"
-                                                className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
-                                            >
-                                                T-Shirt
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
-                                            >
-                                                Shirt
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
-                                            >
-                                                Denim
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
-                                            >
-                                                Short
-                                            </a>
-                                            <a
-                                                href="#"
-                                                className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
-                                            >
-                                                Jacket
-                                            </a>
+                                            {
+                                                types && types.map(value => (
+                                                    <NavLink
+                                                        to='#' onClick={() => setType(value.name)} key={value.id}
+                                                        className="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5"
+                                                    >
+                                                        {value.name}
+                                                    </NavLink>
+                                                ))
+                                            }
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -509,44 +534,35 @@ export const Product = () => {
                             >
                                 {
                                     images && images.map((value) => (
-                                        <div
-                                            className="ProductItem-gallery-thumbnails-item loaded"
-                                            style={{minHeight: "5rem", cursor: "pointer"}}
-                                            onClick={() => setUrl(value.url)}
+                                            <div
+                                                className="ProductItem-gallery-thumbnails-item loaded"
+                                                style={{minHeight: "5rem", cursor: "pointer"}}
+                                                onClick={() => setUrl(value.url)}
 
-                                        >
-                                            <img
-                                                className="ProductItem-gallery-thumbnails-item-image"
-                                                data-load="false"
-                                                data-src="https://images.squarespace-cdn.com/content/v1/624b503d84c2ba7dc187a92a/1649102915518-M77C3POWQPXXO63QKUZ9/ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
-                                                data-image="https://images.squarespace-cdn.com/content/v1/624b503d84c2ba7dc187a92a/1649102915518-M77C3POWQPXXO63QKUZ9/ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
-                                                data-image-dimensions="1600x1600"
-                                                data-image-focal-point="0.5,0.5"
-                                                alt="ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
-                                                style={{
-                                                    // width: "100%",
-                                                    // height: "100%",
-                                                    objectPosition: "50% 50%",
-                                                    objectFit: "cover"
-                                                }}
-                                                data-parent-ratio="0.7"
-                                                data-image-resolution="100w"
-                                                src={value.url}
-                                            />
+                                            >
+                                                <img
+                                                    className="ProductItem-gallery-thumbnails-item-image"
+                                                    data-load="false"
+                                                    data-src="https://images.squarespace-cdn.com/content/v1/624b503d84c2ba7dc187a92a/1649102915518-M77C3POWQPXXO63QKUZ9/ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
+                                                    data-image="https://images.squarespace-cdn.com/content/v1/624b503d84c2ba7dc187a92a/1649102915518-M77C3POWQPXXO63QKUZ9/ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
+                                                    data-image-dimensions="1600x1600"
+                                                    data-image-focal-point="0.5,0.5"
+                                                    alt="ulihu-charcoal-silk-linen-tunic_0326-v1-FINAL-copy.jpg"
+                                                    style={{
+                                                        // width: "100%",
+                                                        // height: "100%",
+                                                        objectPosition: "50% 50%",
+                                                        objectFit: "cover"
+                                                    }}
+                                                    data-parent-ratio="0.7"
+                                                    data-image-resolution="100w"
+                                                    src={value.url}
+                                                />
 
-                                        </div>
+                                            </div>
                                         )
                                     )
                                 }
-                                
-
-
-
-
-
-
-
-
 
 
                             </div>
@@ -587,64 +603,97 @@ export const Product = () => {
                                 <span
                                     className="mtext-106 cl2">${products.find((value) => value.name === detail)?.price}</span>
                                 <p className="stext-102 cl3 p-t-23">
-                                    Nulla eget sem vitae eros pharetra viverra. Nam vitae luctus
-                                    ligula. Mauris consequat ornare feugiat.
+                                    {products.find((value) => value.name === detail)?.description}
                                 </p>
                                 {/*  */}
-                                <div className="p-t-33">
-                                    <div className="flex-w flex-r-m p-b-10">
-                                        <div className="size-203 flex-c-m respon6">Size</div>
-                                        <div className="size-204 respon6-next">
-                                            <div className="rs1-select2 bor8 bg0">
-                                                <select className="js-select2" name="time">
-                                                    <option>Choose an option</option>
-                                                    <option>Size S</option>
-                                                    <option>Size M</option>
-                                                    <option>Size L</option>
-                                                    <option>Size XL</option>
-                                                </select>
-                                                <div className="dropDownSelect2"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex-w flex-r-m p-b-10">
-                                        <div className="size-203 flex-c-m respon6">Color</div>
-                                        <div className="size-204 respon6-next">
-                                            <div className="rs1-select2 bor8 bg0">
-                                                <select className="js-select2" name="time">
-                                                    <option>Choose an option</option>
-                                                    <option>Red</option>
-                                                    <option>Blue</option>
-                                                    <option>White</option>
-                                                    <option>Grey</option>
-                                                </select>
-                                                <div className="dropDownSelect2"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="flex-w flex-r-m p-b-10">
-                                        <div className="size-204 flex-w flex-m respon6-next">
-                                            <div className="wrap-num-product flex-w m-r-20 m-tb-10">
-                                                <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i className="fs-16 zmdi zmdi-minus"/>
+                                <Formik initialValues={{
+                                    size: chooseSize,
+                                    quantity: chooseQuantity
+                                }} validationSchema={yup.object({
+                                    size: yup.number().required("Please choose your size").min(1, "Please choose your size"),
+                                    quantity: yup.number().required("Please fill quantity").min(1, "Please fill quantity")
+
+                                })}
+                                        onSubmit={values => {
+                                            const res = async () => {
+                                                try {
+                                                    const r = await productService.addToCart(detail,values.size,localStorage.getItem("username"),chooseQuantity)
+                                                    await toast.success(r.data)
+                                                    console.log(r)
+                                                    closeModal()
+                                                }catch (a) {
+
+                                                    // await toast.error(a.message)
+                                                    // await toast.error(a.response.data)
+
+                                                }
+                                            }
+                                            res()
+
+                                        }}>
+                                    <Form>
+                                        <div className="p-t-33">
+                                            <div className="flex-w flex-r-m p-b-10">
+                                                <div className="size-203  respon6"><b>Size</b></div>
+                                                <div className="size-204 respon6-next">
+                                                    <div className="rs1-select2 bor8 bg0">
+                                                        <Field as='select' style={{width: '100%'}} className=" btn"
+                                                               name="size">
+                                                            <option value=''>Choose Size</option>
+                                                            {
+                                                                size && size.map(value => (
+                                                                    <option key={value.id}
+                                                                            value={value.id}>{value.name}</option>
+
+                                                                ))
+                                                            }
+
+                                                        </Field>
+
+                                                        <div/>
+
+                                                    </div>
+                                                    <ErrorMessage name='size' component='span'/>
                                                 </div>
-                                                <input
-                                                    className="mtext-104 cl3 txt-center num-product"
-                                                    type="number"
-                                                    name="num-product"
-                                                    defaultValue={1}
-                                                />
-                                                <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                    <i className="fs-16 zmdi zmdi-plus"/>
-                                                </div>
                                             </div>
-                                            <button
-                                                className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
-                                                Add to cart
-                                            </button>
+
+                                            <div className="flex-w flex-r-m p-b-10">
+
+
+                                                <div style={{display:'block'}} className="size-204 flex-w flex-m respon6-next">
+
+                                                    <div className="wrap-num-product flex-w m-r-20 m-tb-10">
+
+                                                        <div
+                                                            onClick={() => minus()}
+                                                            className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                            <i className="fs-16 zmdi zmdi-minus"/>
+                                                        </div>
+                                                        <Field
+                                                            className="mtext-104 cl3 txt-center num-product"
+                                                            type="number"
+                                                            name="quantity"
+                                                            value={chooseQuantity}
+                                                        />
+                                                        <div
+                                                            onClick={() => setChooseQuantity(prevState => prevState + 1)}
+                                                            className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                            <i className="fs-16 zmdi zmdi-plus"/>
+                                                        </div>
+                                                    </div>
+                                                    <ErrorMessage name='quantity' component='span'/>
+                                                    <button
+                                                        type='submit'
+                                                        className="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 ">
+                                                        Add to cart
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    </Form>
+                                </Formik>
                                 {/*  */}
                                 <div className="flex-w flex-m p-l-100 p-t-40 respon7">
                                     <div className="flex-m bor9 p-r-10 m-r-11">
@@ -688,4 +737,5 @@ export const Product = () => {
         </>
 
     )
+
 }
