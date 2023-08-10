@@ -27,7 +27,6 @@ export const Product = () => {
 
     const [chooseSize, setChooseSize] = useState(0)
     const [chooseQuantity, setChooseQuantity] = useState(1)
-    const [resultAdd, setResultAdd] = useState('')
 
 
     const getList = async () => {
@@ -624,7 +623,7 @@ export const Product = () => {
                                                 }catch (a) {
 
                                                     // await toast.error(a.message)
-                                                    // await toast.error(a.response.data)
+                                                    await toast.error(a.response.data)
 
                                                 }
                                             }

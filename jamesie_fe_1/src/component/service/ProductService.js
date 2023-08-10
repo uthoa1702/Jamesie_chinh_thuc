@@ -47,10 +47,8 @@ export const getSize = async (name) => {
 }
 
 export const addToCart = async (productName,size, username, quantity) => {
-    try {
+
         return  await axios.post("http://localhost:8080/shopping/add?size=" + size + "&productName=" + productName + "&username=" + username + "&quantity=" + quantity)
 
-    }catch (e) {
-        console.log(e)
-    }
+
 }

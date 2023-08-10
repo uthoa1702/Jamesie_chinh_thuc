@@ -26,4 +26,6 @@ public interface IProductService {
     Products findByNameAndSize(String name, Long sizeId);
 
     void save(Products products);
+
+    Products findById(Long productId);
 }

@@ -41,7 +41,6 @@ public class ShoppingCartService implements IShoppingCartService {
             if (products.getAmount() > quantity) {
                 ShoppingCart shoppingCart = iShoppingCartRepository.findByCustomersAndProducts(customers, products);
 
-
                 if (shoppingCart != null) {
                     Integer amount = shoppingCart.getAmount() + quantity;
                     shoppingCart.setAmount(amount);
@@ -52,7 +51,7 @@ public class ShoppingCartService implements IShoppingCartService {
                 iShoppingCartRepository.save(shoppingCartNew);
                 return ResponseEntity.status(HttpStatus.OK).body("Added Successfully");
             }
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not enough quantity of product that you would like to buy, please try again.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not enough quantity, please try again.");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Please check quantity or size");
     }
@@ -60,5 +59,50 @@ public class ShoppingCartService implements IShoppingCartService {
     @Override
     public List<ShoppingCart> findByUsername(String username) {
         return iShoppingCartRepository.findByUsername(username);
+    }
+
+    @Override
+    public Double getToTal(String username) {
+        List<ShoppingCart> shoppingCartList = iShoppingCartRepository.findByUsername(username);
+        Double total = 0.0;
+        for (int i = 0; i < shoppingCartList.size(); i++) {
+            total = total + (shoppingCartList.get(i).getAmount() * shoppingCartList.get(i).getProducts().getPrice());
+        }
+        return total;
+
+    }
+
+    @Override
+    public void changeQuantity(String username, Long productId, String addOrMinus) {
+        Customers customers = iCustomerService.findByUsername(username);
+        Products products = iProductService.findById(productId);
+        ShoppingCart shoppingCart = iShoppingCartRepository.findByCustomersAndProducts(customers, products);
+
+        switch (addOrMinus) {
+            case "plus": {
+                Integer amount = shoppingCart.getAmount() + 1;
+                if (products.getAmount() >= amount) {
+                    shoppingCart.setAmount(amount);
+                    iShoppingCartRepository.save(shoppingCart);
+                    break;
+                }
+                break;
+
+
+            }
+            case "minus": {
+                Integer amount = shoppingCart.getAmount() - 1;
+                if (amount < 1) {
+                    iShoppingCartRepository.delete(shoppingCart);
+                    break;
+                }
+                shoppingCart.setAmount(amount);
+                iShoppingCartRepository.save(shoppingCart);
+                break;
+            }
+            default: {
+
+            }
+        }
     }
 }

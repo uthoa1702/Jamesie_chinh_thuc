@@ -2,33 +2,45 @@ import {useEffect, useState} from "react";
 import * as shoppingCartService from '../service/ShoppingCartService'
 
 export const ShoppingCart = () => {
-    const [listProduct , setListProduct] = useState([])
+    const [listProduct, setListProduct] = useState([])
+    const [total, setTotal] = useState(0)
 
     const getList = async () => {
         try {
             const res = await shoppingCartService.getList(localStorage.getItem("username"))
             await setListProduct(res)
-        }catch (e) {
+
+            const totall = await shoppingCartService.getTotal(localStorage.getItem("username"))
+            await setTotal(totall)
+        } catch (e) {
             console.log(e)
         }
     }
+    const minusFunction = async (productId) => {
+        await shoppingCartService.addAndMinus(localStorage.getItem('username'), productId, "minus")
+        await getList()
+    }
+    const addFunction = async (productId) => {
+        await shoppingCartService.addAndMinus(localStorage.getItem('username'), productId, "plus")
+        await getList()
+    }
     useEffect(() => {
         getList()
-    },[])
+    }, [total])
 
-    return(
+    return (
         <>
             <form className="bg0 p-t-75 p-b-85">
                 <div style={{paddingTop: '6vh'}} className="container">
                     <div className="row">
-                        <div  className="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                        <div className="col-lg-10 col-xl-7 m-lr-auto m-b-50">
                             <div className="m-l-25 m-r--38 m-lr-0-xl">
                                 <div className="wrap-table-shopping-cart">
                                     <table className="table-shopping-cart">
                                         <tbody>
                                         <tr className="table_head">
                                             <th className="column-1">Product</th>
-                                            <th className="column-2" />
+                                            <th className="column-2"/>
                                             <th className="column-3">Size</th>
                                             <th className="column-4">Quantity</th>
 
@@ -41,7 +53,7 @@ export const ShoppingCart = () => {
                                                 <tr className="table_row">
                                                     <td className="column-1">
                                                         <div className="how-itemcart1">
-                                                            <img src={value.products.image1} alt="IMG" />
+                                                            <img src={value.products.image1} alt="IMG"/>
                                                         </div>
                                                     </td>
                                                     <td className="column-2">{value.products.name}</td>
@@ -49,8 +61,10 @@ export const ShoppingCart = () => {
 
                                                     <td className="column-4">
                                                         <div className="wrap-num-product flex-w m-l-auto m-r-0">
-                                                            <div className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
-                                                                <i className="fs-16 zmdi zmdi-minus" />
+                                                            <div
+                                                                onClick={() => minusFunction(value.products.id)}
+                                                                className="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                                <i className="fs-16 zmdi zmdi-minus"/>
                                                             </div>
                                                             <input
                                                                 className="mtext-104 cl3 txt-center num-product"
@@ -58,8 +72,10 @@ export const ShoppingCart = () => {
                                                                 name="num-product1"
                                                                 value={value.amount}
                                                             />
-                                                            <div className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
-                                                                <i className="fs-16 zmdi zmdi-plus" />
+                                                            <div
+                                                                onClick={() => addFunction(value.products.id)}
+                                                                className="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                                <i className="fs-16 zmdi zmdi-plus"/>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -68,8 +84,6 @@ export const ShoppingCart = () => {
                                                 </tr>
                                             ))
                                         }
-
-
 
 
                                         </tbody>
@@ -83,11 +97,13 @@ export const ShoppingCart = () => {
                                             name="coupon"
                                             placeholder="Coupon Code"
                                         />
-                                        <div className="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
+                                        <div
+                                            className="flex-c-m stext-101 cl2 size-118 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-5">
                                             Apply coupon
                                         </div>
                                     </div>
-                                    <div className="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
+                                    <div
+                                        className="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10">
                                         Update Cart
                                     </div>
                                 </div>
@@ -101,7 +117,7 @@ export const ShoppingCart = () => {
                                         <span className="stext-110 cl2">Subtotal:</span>
                                     </div>
                                     <div className="size-209">
-                                        <span className="mtext-110 cl2">$79.65</span>
+                                        <span className="mtext-110 cl2">${total}</span>
                                     </div>
                                 </div>
                                 <div className="flex-w flex-t bor12 p-t-15 p-b-30">
@@ -121,7 +137,7 @@ export const ShoppingCart = () => {
                                                     <option>USA</option>
                                                     <option>UK</option>
                                                 </select>
-                                                <div className="dropDownSelect2" />
+                                                <div className="dropDownSelect2"/>
                                             </div>
                                             <div className="bor8 bg0 m-b-12">
                                                 <input
@@ -140,7 +156,8 @@ export const ShoppingCart = () => {
                                                 />
                                             </div>
                                             <div className="flex-w">
-                                                <div className="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
+                                                <div
+                                                    className="flex-c-m stext-101 cl2 size-115 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer">
                                                     Update Totals
                                                 </div>
                                             </div>
@@ -152,10 +169,11 @@ export const ShoppingCart = () => {
                                         <span className="mtext-101 cl2">Total:</span>
                                     </div>
                                     <div className="size-209 p-t-1">
-                                        <span className="mtext-110 cl2">$79.65</span>
+                                        <span className="mtext-110 cl2">${total}</span>
                                     </div>
                                 </div>
-                                <button className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                                <button
+                                    className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                                     Proceed to Checkout
                                 </button>
                             </div>

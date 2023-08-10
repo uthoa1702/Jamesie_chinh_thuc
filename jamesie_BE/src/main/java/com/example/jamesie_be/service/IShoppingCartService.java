@@ -17,4 +17,8 @@ public interface IShoppingCartService {
     ResponseEntity<?> add(Long sizeId, Products productName, Customers username, Integer quantity);
 
     List<ShoppingCart> findByUsername(String username);
+
+    Double getToTal(String username);
+
+    void changeQuantity(String username, Long productId, String addOrMinus);
 }

@@ -52,9 +52,24 @@ public class ShoppingCartRestController {
     public ResponseEntity<?> getMyCart(@RequestParam("username")String username){
         List<ShoppingCart> shoppingCartList = iShoppingCartService.findByUsername(username);
         if (shoppingCartList.isEmpty()){
-            return ResponseEntity.status(HttpStatus.OK).body("Your cart is empty");
+            return new ResponseEntity<>( shoppingCartList , HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>( shoppingCartList , HttpStatus.OK);
+
+    }
+
+    @GetMapping("/total")
+    public ResponseEntity<?> getTotal(@RequestParam("username")String username){
+        Double total = iShoppingCartService.getToTal(username);
+        return new ResponseEntity<>( total, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/changeQuantity")
+    public void change(@RequestParam("username")String username,
+                       @RequestParam("productId") Long productId,
+                       @RequestParam("addOrMinus") String addOrMinus){
+        iShoppingCartService.changeQuantity(username, productId, addOrMinus);
 
     }
 }

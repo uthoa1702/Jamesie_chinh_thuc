@@ -71,6 +71,11 @@ public class ProductService implements IProductService {
         iProductRepository.save(products);
     }
 
+    @Override
+    public Products findById(Long productId) {
+        return iProductRepository.findById(productId).get();
+    }
+
     public static Page<ProductDTO> transformDTO(Page<IProductDTO> iProductDTOS) {
 
         return iProductDTOS.map(iProductDTO -> {
