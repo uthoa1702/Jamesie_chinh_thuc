@@ -454,7 +454,7 @@ export const Product = () => {
                     </div>
                     <div className="row isotope-grid">
                         {
-                            products && products.map((value, index) => (
+                         products ? (products.map((value, index) => (
 
 
                                     <div onClick={() => openModal(value.name)}
@@ -501,7 +501,9 @@ export const Product = () => {
 
 
                                 )
-                            )
+                                )) :
+                      <div>ljkhdsgf</div>
+
                         }
                     </div>
 
@@ -616,11 +618,11 @@ export const Product = () => {
                                         onSubmit={values => {
                                             const res = async () => {
                                                 try {
-                                                    const r = await productService.addToCart(detail,values.size,localStorage.getItem("username"),chooseQuantity)
-                                                    await toast.success(r.data)
+                                                    const r = await productService.addToCart(detail, values.size, chooseQuantity)
+                                                    await toast.success("Added Successfully")
                                                     console.log(r)
                                                     closeModal()
-                                                }catch (a) {
+                                                } catch (a) {
 
                                                     // await toast.error(a.message)
                                                     await toast.error(a.response.data)
@@ -659,7 +661,8 @@ export const Product = () => {
                                             <div className="flex-w flex-r-m p-b-10">
 
 
-                                                <div style={{display:'block'}} className="size-204 flex-w flex-m respon6-next">
+                                                <div style={{display: 'block'}}
+                                                     className="size-204 flex-w flex-m respon6-next">
 
                                                     <div className="wrap-num-product flex-w m-r-20 m-tb-10">
 

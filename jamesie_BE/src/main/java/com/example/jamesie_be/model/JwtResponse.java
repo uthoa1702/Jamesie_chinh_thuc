@@ -9,9 +9,25 @@ public class JwtResponse implements Serializable {
 
 	private final String username;
 
+	private   String role;
+
 	public JwtResponse(String jwttoken, String username) {
 		this.jwttoken = jwttoken;
 		this.username = username;
+	}
+
+	public JwtResponse(String jwttoken, String username, String role) {
+		this.jwttoken = jwttoken;
+		this.username = username;
+		this.role = role;
+	}
+
+	public String getJwttoken() {
+		return jwttoken;
+	}
+
+	public String getRole() {
+		return role;
 	}
 
 	public String getToken() {

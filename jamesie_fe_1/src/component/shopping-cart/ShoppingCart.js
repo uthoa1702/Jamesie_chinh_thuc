@@ -7,21 +7,21 @@ export const ShoppingCart = () => {
 
     const getList = async () => {
         try {
-            const res = await shoppingCartService.getList(localStorage.getItem("username"))
+            const res = await shoppingCartService.getList()
             await setListProduct(res)
 
-            const totall = await shoppingCartService.getTotal(localStorage.getItem("username"))
+            const totall = await shoppingCartService.getTotal()
             await setTotal(totall)
         } catch (e) {
             console.log(e)
         }
     }
     const minusFunction = async (productId) => {
-        await shoppingCartService.addAndMinus(localStorage.getItem('username'), productId, "minus")
+        await shoppingCartService.addAndMinus( productId, "minus")
         await getList()
     }
     const addFunction = async (productId) => {
-        await shoppingCartService.addAndMinus(localStorage.getItem('username'), productId, "plus")
+        await shoppingCartService.addAndMinus( productId, "plus")
         await getList()
     }
     useEffect(() => {
@@ -49,7 +49,7 @@ export const ShoppingCart = () => {
                                         </tr>
 
                                         {
-                                            listProduct && listProduct.map(value => (
+                                            listProduct ? listProduct.map(value => (
                                                 <tr className="table_row">
                                                     <td className="column-1">
                                                         <div className="how-itemcart1">
@@ -82,7 +82,12 @@ export const ShoppingCart = () => {
                                                     <td className="column-5">$ {value.products.price}</td>
                                                     <td className="column-6">$ {value.amount * value.products.price}</td>
                                                 </tr>
-                                            ))
+                                            )):
+                                            <tr style={{textAlign:'center'}}>
+                                                <th colSpan={6} style={{ color:'red', textAlign:'center'}}>Your Cart is  empty</th></tr>
+
+
+
                                         }
 
 

@@ -30,6 +30,7 @@ export const Login = () => {
 
                                     await localStorage.setItem('token',r.data.token)
                                     await localStorage.setItem('username',r.data.username)
+                                    await localStorage.setItem('role',r.data.role)
 
 
                                     await navigate("/")

@@ -31,6 +31,11 @@ public class ShoppingCart {
         this.amount = amount;
     }
 
+    public ShoppingCart(Products products, Integer amount) {
+        this.products = products;
+        this.amount = amount;
+    }
+
     public Long getId() {
         return id;
     }

@@ -87,8 +87,6 @@ public class ShoppingCartService implements IShoppingCartService {
                     break;
                 }
                 break;
-
-
             }
             case "minus": {
                 Integer amount = shoppingCart.getAmount() - 1;

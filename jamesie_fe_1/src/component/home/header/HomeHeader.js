@@ -41,6 +41,7 @@ export const HomeHeader = () => {
     const logOut = async () => {
         localStorage.removeItem("token")
         localStorage.removeItem("username")
+        localStorage.removeItem("role")
         await setUsername('')
         toast.success("Log out successfully")
     }
