@@ -21,4 +21,6 @@ public interface IShoppingCartService {
     Double getToTal(String username);
 
     void changeQuantity(String username, Long productId, String addOrMinus);
+
+    void deleteByCustomer(Customers customers);
 }

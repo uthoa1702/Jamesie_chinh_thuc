@@ -103,4 +103,9 @@ public class ShoppingCartService implements IShoppingCartService {
             }
         }
     }
+
+    @Override
+    public void deleteByCustomer(Customers customers) {
+        iShoppingCartRepository.deleteAllByCustomers(customers);
+    }
 }

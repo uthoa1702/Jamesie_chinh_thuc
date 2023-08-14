@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
 import * as shoppingCartService from '../service/ShoppingCartService'
+import { PayPalButton } from "react-paypal-button-v2";
 
 export const ShoppingCart = () => {
     const [listProduct, setListProduct] = useState([])
     const [total, setTotal] = useState(0)
+    const token = localStorage.getItem("token");
 
     const getList = async () => {
         try {
@@ -79,8 +81,8 @@ export const ShoppingCart = () => {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="column-5">$ {value.products.price}</td>
-                                                    <td className="column-6">$ {value.amount * value.products.price}</td>
+                                                    <td className="column-5">${value.products.price}</td>
+                                                    <td className="column-6">${(value.amount * value.products.price)?.toFixed(2)}</td>
                                                 </tr>
                                             )):
                                             <tr style={{textAlign:'center'}}>
@@ -122,7 +124,7 @@ export const ShoppingCart = () => {
                                         <span className="stext-110 cl2">Subtotal:</span>
                                     </div>
                                     <div className="size-209">
-                                        <span className="mtext-110 cl2">${total}</span>
+                                        <span className="mtext-110 cl2">${total?.toFixed(2)}</span>
                                     </div>
                                 </div>
                                 <div className="flex-w flex-t bor12 p-t-15 p-b-30">
@@ -174,13 +176,41 @@ export const ShoppingCart = () => {
                                         <span className="mtext-101 cl2">Total:</span>
                                     </div>
                                     <div className="size-209 p-t-1">
-                                        <span className="mtext-110 cl2">${total}</span>
+                                        <span className="mtext-110 cl2">${total?.toFixed(2)}</span>
                                     </div>
                                 </div>
-                                <button
-                                    className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                                    Proceed to Checkout
-                                </button>
+                                {
+                                   token ? <div>
+                                           <button
+                                               className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                                               Proceed to Checkout
+                                           </button>
+                                           <PayPalButton
+                                               amount="0.01"
+                                               // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                               onSuccess={(details, data) => {
+                                                   alert("Transaction completed by " + details.payer.name.given_name);
+
+                                                   // OPTIONAL: Call your server to save the transaction
+                                                   return fetch("/paypal-transaction-complete", {
+                                                       method: "post",
+                                                       body: JSON.stringify({
+                                                           orderId: data.orderID
+                                                       })
+                                                   });
+                                               }}
+                                               options={{
+                                                   clientId: "PRODUCTION_CLIENT_ID"
+                                               }}
+                                           />
+                                   </div>
+                                       : <button
+                                       className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+                                       Login to check out
+                                   </button>
+                                }
+
+
                             </div>
                         </div>
                     </div>
