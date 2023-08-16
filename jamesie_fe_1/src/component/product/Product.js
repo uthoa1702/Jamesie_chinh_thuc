@@ -90,11 +90,16 @@ export const Product = () => {
 
     const showFilter = () => {
         setProductName('')
+        setType('')
+        setColor('')
+        setPrice('')
+        setSortBy('')
         setFilter(!filter)
         setSearch(false)
     }
 
     const showSearch = () => {
+        setProductName('')
         setType('')
         setColor('')
         setPrice('')
@@ -463,7 +468,7 @@ export const Product = () => {
                                         <div className="block2">
                                             <div className="block2-pic hov-img0 "
                                             >
-                                                <img src={value.url} alt="IMG-PRODUCT"/>
+                                                <img src={value.url} style={{width:'100%' , height:'400px', objectFit: 'contain'}} alt="IMG-PRODUCT"/>
 
 
                                             </div>
@@ -581,6 +586,7 @@ export const Product = () => {
                                         >
                                             <div className="wrap-pic-w pos-relative">
                                                 <img src={url}
+                                                     style={{width:'100%' , height:'600px', objectFit: 'contain'}}
                                                      alt="IMG-PRODUCT"/>
                                                 <a
                                                     className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
