@@ -49,6 +49,7 @@ public class OrderRestController {
         Customers customers = iCustomerService.findByUsername(getUserDetails().getUsername());
         Orders orders = new Orders(customers);
         iOrderService.save(orders);
+        int count = 0;
         for (int i = 0; i < shoppingCartList.size(); i++) {
             if (shoppingCartList.get(i).getProducts().getAmount() >= shoppingCartList.get(i).getAmount()) {
                 Long change = shoppingCartList.get(i).getProducts().getAmount() - shoppingCartList.get(i).getAmount();
@@ -71,9 +72,16 @@ public class OrderRestController {
                         "Pending");
                 iOrderDetailService.save(orderDetail);
                 iShoppingCartService.deleteProductInCart(getUserDetails().getUsername(), orderDetail.getProducts().getId());
-
+                count++;
             }
         }
+        if (count > 0) {
+            orders.setStatus("Not fully success");
+        }
+        else {
+            orders.setStatus("Successfully");
+        }
+        iOrderService.save(orders);
         return new ResponseEntity<>("Successfully", HttpStatus.OK);
     }
 }
