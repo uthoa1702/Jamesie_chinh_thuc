@@ -57,12 +57,52 @@ export const addAndMinus = async (productId, addOrMinus) => {
                     }
                 })
         }
-        if (token == null){
+        if (token === null){
             await axios.post("http://localhost:8080/shopping/changeQuantitySession?productId=" + productId + "&addOrMinus=" + addOrMinus,'',
                 {withCredentials: true})
         }
 
     } catch (e) {
+        console.log(e)
+    }
+}
+
+
+export const deleteCart = async (productId) => {
+    try {
+        if (token === null){
+            await axios.post("http://localhost:8080/shopping/SessionDelete?productId=" + productId , "",
+
+            {withCredentials: true}
+                )
+        }
+        if (token !== null){
+            await axios.post("http://localhost:8080/shopping/delete?productId=" + productId , "",
+
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+
+                    }
+                }
+            )
+        }
+    }catch (e) {
+        console.log(e)
+    }
+}
+
+export const orders = async () => {
+    try {
+        const res = await axios.post("http://localhost:8080/order/createOrder","",
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+
+                }
+            })
+        return res.data
+    }catch (e) {
         console.log(e)
     }
 }

@@ -152,7 +152,7 @@ export const HomeHeader = () => {
                     <ul className="main-menu-m">
 
                         <li>
-                            <a href="product.html">Shop</a>
+                            <NavLink to={'/product'} >Shop</NavLink>
                         </li>
 
                         <li>
@@ -195,7 +195,7 @@ export const HomeHeader = () => {
                         <ul className="main-menu">
 
                             <li>
-                                <a href="product.html">Shop</a>
+                                <NavLink to={'/product'} >Shop</NavLink>
                             </li>
 
                             <li>

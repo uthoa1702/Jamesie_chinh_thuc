@@ -19,7 +19,24 @@ public class OrderDetail {
 
     private Integer amount;
 
-    private Long total;
+    private Double total;
+    private String status;
+
+    public OrderDetail(Orders orders, Products products, Integer amount, Double total, String status) {
+        this.orders = orders;
+        this.products = products;
+        this.amount = amount;
+        this.total = total;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public OrderDetail() {
     }
@@ -28,7 +45,7 @@ public class OrderDetail {
         this.id = id;
     }
 
-    public OrderDetail(Long id, Orders orders, Products products, Integer amount, Long total) {
+    public OrderDetail(Long id, Orders orders, Products products, Integer amount, Double total) {
         this.id = id;
         this.orders = orders;
         this.products = products;
@@ -41,7 +58,7 @@ public class OrderDetail {
         this.products = products;
     }
 
-    public OrderDetail(Orders orders, Products products, Integer amount, Long total) {
+    public OrderDetail(Orders orders, Products products, Integer amount, Double total) {
         this.orders = orders;
         this.products = products;
         this.amount = amount;
@@ -86,11 +103,11 @@ public class OrderDetail {
         this.amount = amount;
     }
 
-    public Long getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 }

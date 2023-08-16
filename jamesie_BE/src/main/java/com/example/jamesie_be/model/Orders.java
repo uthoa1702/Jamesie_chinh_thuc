@@ -34,7 +34,33 @@ public class Orders {
     @JoinColumn(name = "customer_id")
     private Customers customers;
 
+    private String status;
 
+    public Orders(String status) {
+        this.status = status;
+    }
+
+    public Orders(Customers customers, String status) {
+        this.customers = customers;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Orders(Long id, LocalDateTime createTime, LocalDateTime updateTime, boolean isDelete, Customers customers, String status) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.isDelete = isDelete;
+        this.customers = customers;
+        this.status = status;
+    }
 
     public Orders() {
     }

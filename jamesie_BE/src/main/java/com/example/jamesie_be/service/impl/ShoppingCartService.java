@@ -108,4 +108,11 @@ public class ShoppingCartService implements IShoppingCartService {
     public void deleteByCustomer(Customers customers) {
         iShoppingCartRepository.deleteAllByCustomers(customers);
     }
+
+    @Override
+    public void deleteProductInCart(String username, Long productId) {
+        Customers customers = iCustomerService.findByUsername(username);
+        Products products = iProductService.findById(productId);
+        iShoppingCartRepository.deleteAllByCustomersAndProducts(customers, products);
+    }
 }

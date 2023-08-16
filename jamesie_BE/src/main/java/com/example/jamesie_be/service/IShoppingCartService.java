@@ -23,4 +23,6 @@ public interface IShoppingCartService {
     void changeQuantity(String username, Long productId, String addOrMinus);
 
     void deleteByCustomer(Customers customers);
+
+    void deleteProductInCart(String username, Long productId);
 }

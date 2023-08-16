@@ -1,6 +1,7 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as shoppingCartService from '../service/ShoppingCartService'
 import { PayPalButton } from "react-paypal-button-v2";
+import {toast} from "react-toastify";
 
 export const ShoppingCart = () => {
     const [listProduct, setListProduct] = useState([])
@@ -30,6 +31,15 @@ export const ShoppingCart = () => {
         getList()
     }, [total])
 
+    const deleteCart = async (id) => {
+        try {
+            await shoppingCartService.deleteCart(id);
+            await getList();
+        }catch (e) {
+            console.log(e)
+        }
+    }
+
     return (
         <>
             <form className="bg0 p-t-75 p-b-85">
@@ -54,7 +64,7 @@ export const ShoppingCart = () => {
                                             listProduct ? listProduct.map(value => (
                                                 <tr className="table_row">
                                                     <td className="column-1">
-                                                        <div className="how-itemcart1">
+                                                        <div className="how-itemcart1" onClick={() => deleteCart(value.products.id)}>
                                                             <img src={value.products.image1} alt="IMG"/>
                                                         </div>
                                                     </td>
@@ -181,26 +191,24 @@ export const ShoppingCart = () => {
                                 </div>
                                 {
                                    token ? <div>
-                                           <button
-                                               className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
-                                               Proceed to Checkout
-                                           </button>
+                                           {/*<button*/}
+                                           {/*    className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">*/}
+                                           {/*    Proceed to Checkout*/}
+                                           {/*</button>*/}
                                            <PayPalButton
-                                               amount="0.01"
+                                               amount={total?.toFixed(2)}
                                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-                                               onSuccess={(details, data) => {
-                                                   alert("Transaction completed by " + details.payer.name.given_name);
-
+                                               onSuccess={ async (details, data) => {
+                                                   await toast.success("Transaction completed by " + details.payer.name.given_name);
+                                                   const res = await shoppingCartService.orders()
+                                                    await getList()
                                                    // OPTIONAL: Call your server to save the transaction
                                                    return fetch("/paypal-transaction-complete", {
                                                        method: "post",
                                                        body: JSON.stringify({
-                                                           orderId: data.orderID
+                                                           orderID: data.orderID
                                                        })
                                                    });
-                                               }}
-                                               options={{
-                                                   clientId: "PRODUCTION_CLIENT_ID"
                                                }}
                                            />
                                    </div>
@@ -209,6 +217,7 @@ export const ShoppingCart = () => {
                                        Login to check out
                                    </button>
                                 }
+
 
 
                             </div>

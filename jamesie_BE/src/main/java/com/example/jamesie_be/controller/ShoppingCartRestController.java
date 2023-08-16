@@ -124,51 +124,54 @@ public class ShoppingCartRestController {
         session.setAttribute("cart", shoppingCartList);
         return new ResponseEntity<>(session.getAttribute("cart"), HttpStatus.OK);
     }
+
     @GetMapping("/listSession")
-    public ResponseEntity<?> getList(HttpServletRequest httpServletRequest){
+    public ResponseEntity<?> getList(HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession();
         return new ResponseEntity<>(httpSession.getAttribute("cart"), HttpStatus.OK);
     }
+
     @GetMapping("/totalSession")
-    public ResponseEntity<?>getTotalSession(HttpServletRequest httpServletRequest){
+    public ResponseEntity<?> getTotalSession(HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession();
         List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) httpSession.getAttribute("cart");
         double sum = 0.0;
 
-        if (shoppingCartList.size() > 0){
+        if (shoppingCartList.size() > 0) {
             for (int i = 0; i < shoppingCartList.size(); i++) {
                 double a = shoppingCartList.get(i).getAmount() * shoppingCartList.get(i).getProducts().getPrice();
                 sum = sum + a;
             }
             return new ResponseEntity<>(sum, HttpStatus.OK);
         }
-       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
 
     @PostMapping("/changeQuantitySession")
+    @Transactional
     public void changeQuantity(@RequestParam("productId") Long productId,
-                                            @RequestParam("addOrMinus") String addOrMinus,
-                                            HttpServletRequest httpServletRequest){
+                               @RequestParam("addOrMinus") String addOrMinus,
+                               HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession();
         List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) httpSession.getAttribute("cart");
         for (int i = 0; i < shoppingCartList.size(); i++) {
-            if (Objects.equals(shoppingCartList.get(i).getProducts().getId(), productId)){
-                switch (addOrMinus){
+            if (Objects.equals(shoppingCartList.get(i).getProducts().getId(), productId)) {
+                switch (addOrMinus) {
                     case "plus": {
-                        if (shoppingCartList.get(i).getProducts().getAmount() > shoppingCartList.get(i).getAmount()){
-                            int amount =  shoppingCartList.get(i).getAmount() + 1;
+                        if (shoppingCartList.get(i).getProducts().getAmount() > shoppingCartList.get(i).getAmount()) {
+                            int amount = shoppingCartList.get(i).getAmount() + 1;
                             shoppingCartList.get(i).setAmount(amount);
                             break;
                         }
                         break;
                     }
                     case "minus": {
-                        if (shoppingCartList.get(i).getAmount() == 1){
+                        if (shoppingCartList.get(i).getAmount() == 1) {
                             shoppingCartList.remove(i);
                             break;
                         }
-                        int amount =  shoppingCartList.get(i).getAmount() - 1;
+                        int amount = shoppingCartList.get(i).getAmount() - 1;
                         shoppingCartList.get(i).setAmount(amount);
                         break;
                     }
@@ -180,11 +183,11 @@ public class ShoppingCartRestController {
     }
 
     @PostMapping("/SessionDelete")
-    public void delete( @RequestParam("productId")Long productId,HttpServletRequest httpServletRequest){
+    public void delete(@RequestParam("productId") Long productId, HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession();
         List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) httpSession.getAttribute("cart");
         for (int i = 0; i < shoppingCartList.size(); i++) {
-            if (shoppingCartList.get(i).getProducts().getId() == productId){
+            if (shoppingCartList.get(i).getProducts().getId() == productId) {
                 shoppingCartList.remove(i);
                 break;
             }
@@ -192,6 +195,10 @@ public class ShoppingCartRestController {
 
     }
 
+    @PostMapping("/delete")
+    public void delete(@RequestParam("productId") Long productId) {
+        iShoppingCartService.deleteProductInCart(getUserDetails().getUsername(),productId);
+    }
 
 
 }
