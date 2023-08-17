@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {Carousel, CarouselItem} from "react-bootstrap";
@@ -22,6 +22,9 @@ export const Body = () => {
         // Ví dụ:
         // effect: 'fade',
     };
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    },[])
     return (
 
         <>

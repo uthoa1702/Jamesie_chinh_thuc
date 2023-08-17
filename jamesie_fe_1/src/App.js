@@ -9,24 +9,31 @@ import {ShoppingCart} from "./component/shopping-cart/ShoppingCart";
 import {Product} from "./component/product/Product";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import {Footer} from "./component/home/footer/Footer";
+import {Blog} from "./component/blog/Blog";
+import Provider from "react-redux/es/components/Provider";
+import store from "./redux/store";
 
 function App() {
     return (
-  <>
-            <HomeHeader/>
+        <>
+            <Provider store={store}>
 
 
+                <HomeHeader/>
+                <Routes>
+                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/' element={<Body/>}/>
+                    <Route path='/register' element={<Register/>}/>
+                    <Route path='/shopping-cart' element={<ShoppingCart/>}/>
+                    <Route path='/product' element={<Product/>}/>
+                    <Route path='/blog' element={<Blog/>}/>
+                </Routes>
+                <Footer/>
+                <ToastContainer/>
+            </Provider>
 
-            <Routes>
-                <Route path='/login' element={<Login/>}/>
-                <Route path='/' element={<Body/>}/>
-                <Route path='/register' element={<Register/>}/>
-                <Route path='/shopping-cart' element={<ShoppingCart/>}/>
-                <Route path='/product' element={<Product/>}/>
-            </Routes>
-      <ToastContainer      />
-
-  </>
+        </>
     );
 }
 

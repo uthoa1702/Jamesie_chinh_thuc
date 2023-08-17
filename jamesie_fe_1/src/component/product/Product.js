@@ -5,6 +5,8 @@ import {NavLink} from "react-router-dom";
 import {ErrorMessage, Field, Form, Formik} from "formik";
 import * as yup from 'yup'
 import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
+import {getAllCart} from "../../redux/actions/cart";
 
 
 export const Product = () => {
@@ -27,7 +29,7 @@ export const Product = () => {
 
     const [chooseSize, setChooseSize] = useState(0)
     const [chooseQuantity, setChooseQuantity] = useState(1)
-
+    const dispatch = useDispatch();
 
     const getList = async () => {
         try {
@@ -42,6 +44,9 @@ export const Product = () => {
             console.log(e)
         }
     }
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [])
 
     useEffect(() => {
         getList()
@@ -459,7 +464,7 @@ export const Product = () => {
                     </div>
                     <div className="row isotope-grid">
                         {
-                         products ? (products.map((value, index) => (
+                            products ? (products.map((value, index) => (
 
 
                                     <div onClick={() => openModal(value.name)}
@@ -468,7 +473,9 @@ export const Product = () => {
                                         <div className="block2">
                                             <div className="block2-pic hov-img0 "
                                             >
-                                                <img src={value.url} style={{width:'100%' , height:'400px', objectFit: 'contain'}} alt="IMG-PRODUCT"/>
+                                                <img src={value.url}
+                                                     style={{width: '100%', height: '400px', objectFit: 'contain'}}
+                                                     alt="IMG-PRODUCT"/>
 
 
                                             </div>
@@ -507,7 +514,7 @@ export const Product = () => {
 
                                 )
                                 )) :
-                      <div>ljkhdsgf</div>
+                                <div><p>ljkhdsgf</p></div>
 
                         }
                     </div>
@@ -586,7 +593,7 @@ export const Product = () => {
                                         >
                                             <div className="wrap-pic-w pos-relative">
                                                 <img src={url}
-                                                     style={{width:'100%' , height:'600px', objectFit: 'contain'}}
+                                                     style={{width: '100%', height: '600px', objectFit: 'contain'}}
                                                      alt="IMG-PRODUCT"/>
                                                 <a
                                                     className="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
@@ -625,6 +632,7 @@ export const Product = () => {
                                             const res = async () => {
                                                 try {
                                                     const r = await productService.addToCart(detail, values.size, chooseQuantity)
+                                                    dispatch(getAllCart())
                                                     await toast.success("Added Successfully")
                                                     console.log(r)
                                                     closeModal()

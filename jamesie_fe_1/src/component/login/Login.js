@@ -31,10 +31,20 @@ export const Login = () => {
                                     await localStorage.setItem('token',r.data.token)
                                     await localStorage.setItem('username',r.data.username)
                                     await localStorage.setItem('role',r.data.role)
+                                    // const timeout = 10000; // 30 minutes in milliseconds
+
+                                    // Xóa token sau khi thời gian chờ đã trôi qua
+                                    // const timeoutId = setTimeout(() => {
+                                    //     localStorage.removeItem('token');
+                                    //     console.log('Token has been removed from local storage.');
+                                    // }, timeout);
+                                    // timeoutId();
+
 
 
                                     await navigate("/")
                                     await window.location.reload()
+
 
                                 }
                                 toast.success("Login successfully")

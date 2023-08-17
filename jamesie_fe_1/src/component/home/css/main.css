@@ -506,7 +506,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
   min-width: 15px;
   height: 15px;
   padding: 0 3px;
-  background-color: #717fe0;
+  background-color: #ff0000;
 }
 
 /*---------------------------------------------*/
@@ -3072,7 +3072,7 @@ max-height: 100%;
 
 .hov-cl0:hover {color: #fff;}
 .hov-bg0:hover {background-color: #fff;}
-.hov-cl1:hover {color: #717fe0;}
+.hov-cl1:hover {color: #ff0000;}
 .hov-bg1:hover {background-color: #717fe0;}
 
 /*---------------------------------------------*/

@@ -2,12 +2,17 @@ import React, {useEffect, useState} from "react";
 import * as shoppingCartService from '../service/ShoppingCartService'
 import { PayPalButton } from "react-paypal-button-v2";
 import {toast} from "react-toastify";
+import {useDispatch} from "react-redux";
+import {getAllCart} from "../../redux/actions/cart";
 
 export const ShoppingCart = () => {
     const [listProduct, setListProduct] = useState([])
     const [total, setTotal] = useState(0)
     const token = localStorage.getItem("token");
-
+    const dispatch = useDispatch();
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    },[])
     const getList = async () => {
         try {
             const res = await shoppingCartService.getList()
@@ -15,6 +20,7 @@ export const ShoppingCart = () => {
 
             const totall = await shoppingCartService.getTotal()
             await setTotal(totall)
+            await dispatch(getAllCart())
         } catch (e) {
             console.log(e)
         }
@@ -22,19 +28,28 @@ export const ShoppingCart = () => {
     const minusFunction = async (productId) => {
         await shoppingCartService.addAndMinus( productId, "minus")
         await getList()
+        await dispatch(getAllCart())
+
+
     }
     const addFunction = async (productId) => {
         await shoppingCartService.addAndMinus( productId, "plus")
         await getList()
+        await dispatch(getAllCart())
     }
     useEffect(() => {
         getList()
+         dispatch(getAllCart())
     }, [total])
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    },[])
 
     const deleteCart = async (id) => {
         try {
             await shoppingCartService.deleteCart(id);
             await getList();
+            await dispatch(getAllCart())
         }catch (e) {
             console.log(e)
         }

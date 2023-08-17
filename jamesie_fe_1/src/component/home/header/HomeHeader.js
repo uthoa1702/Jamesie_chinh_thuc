@@ -13,13 +13,18 @@ import '../vendor/slick/slick.css'
 import '../vendor/daterangepicker/daterangepicker.css'
 import '../vendor/bootstrap/css/bootstrap.min.css'
 import {Link, NavLink} from "react-router-dom";
-import {useEffect, useState} from "react";
-import {toast} from "react-toastify";
+import React, {useEffect, useState} from "react";
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {useDispatch, useSelector} from "react-redux";
+import {getAllCart} from "../../../redux/actions/cart";
 
 
 export const HomeHeader = () => {
+    const quantityCart = useSelector(state => state.cart)
     const [isTop, setIsTop] = useState(true);
     const [username, setUsername] = useState('');
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -35,8 +40,9 @@ export const HomeHeader = () => {
     }, []);
 
     useEffect(() => {
+        dispatch(getAllCart());
         setUsername(localStorage.getItem('username'))
-    },[localStorage.getItem("username")])
+    }, [localStorage.getItem("username")])
 
     const logOut = async () => {
         localStorage.removeItem("token")
@@ -66,7 +72,8 @@ export const HomeHeader = () => {
                                     Help &amp; FAQs
                                 </a>
                                 {
-                                    username ? <Link onClick={()=>logOut()} style={{color:'#b2b2b2'}} className="flex-c-m trans-04 p-lr-25" to='/login'>
+                                    username ? <Link onClick={() => logOut()} style={{color: '#b2b2b2'}}
+                                                     className="flex-c-m trans-04 p-lr-25" to='/login'>
                                         {username}
                                     </Link> : <Link className="flex-c-m trans-04 p-lr-25" to='/login'>
                                         My Account
@@ -96,7 +103,8 @@ export const HomeHeader = () => {
                     {/* Icon header */}
                     <div className="wrap-icon-header flex-w flex-r-m m-r-15">
                         <div className="icon-header-item cl2 hov-cl1 trans-04 p-r-11 js-show-modal-search">
-                            <i className="zmdi zmdi-search"/>
+                            <i className="fa-solid fa-ballot-check" style={{color: "#000000"}}/>
+
                         </div>
                         <Link to='/shopping-cart'>
                             <div
@@ -104,7 +112,8 @@ export const HomeHeader = () => {
                                 data-notify={2}
                             >
 
-                                <i className="zmdi zmdi-shopping-cart"/>
+                                <ShoppingCartIcon/>
+                                <ShoppingCartIcon/>
 
 
                             </div>
@@ -152,11 +161,11 @@ export const HomeHeader = () => {
                     <ul className="main-menu-m">
 
                         <li>
-                            <NavLink to={'/product'} >Shop</NavLink>
+                            <NavLink to={'/product'}>Shop</NavLink>
                         </li>
 
                         <li>
-                            <a href="blog.html">Blog</a>
+                            <NavLink to={'/blog'}>Blog</NavLink>
                         </li>
                         <li>
                             <a href="about.html">About</a>
@@ -174,7 +183,8 @@ export const HomeHeader = () => {
                         </button>
                         <form className="wrap-search-header flex-w p-l-15">
                             <button className="flex-c-m trans-04">
-                                <i className="zmdi zmdi-search"/>
+                                <ReceiptLongIcon/>
+
                             </button>
                             <input
                                 className="plh3"
@@ -195,11 +205,11 @@ export const HomeHeader = () => {
                         <ul className="main-menu">
 
                             <li>
-                                <NavLink to={'/product'} >Shop</NavLink>
+                                <NavLink to={'/product'}>Shop</NavLink>
                             </li>
 
                             <li>
-                                <a href="blog.html">Blog</a>
+                                <NavLink to={'/blog'}>Blog</NavLink>
                             </li>
                             <li>
                                 <a href="about.html">About</a>
@@ -220,14 +230,16 @@ export const HomeHeader = () => {
                     <div className="col-3 wrap-icon-header flex-w flex-r-m">
                         <div
                             className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 js-show-modal-search">
-                            <i className="zmdi zmdi-search"/>
+                            <ReceiptLongIcon/>
+
                         </div>
                         <div
-                            className="icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti js-show-cart"
-                            data-notify={5}
+
+                            className="icon-header-item  hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti "
+                            data-notify={quantityCart}
                         >
-                            <NavLink to='/shopping-cart'>
-                                <i className="zmdi zmdi-shopping-cart"/>
+                            <NavLink to='/shopping-cart' style={{color: 'black'}}>
+                                <ShoppingCartIcon/>
 
                             </NavLink>
                         </div>
