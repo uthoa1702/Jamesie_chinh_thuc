@@ -115,12 +115,12 @@ export const Footer = () => {
                         {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
                         Copyright © All rights reserved | Made with{" "}
                         <i className="fa fa-heart-o" aria-hidden="true"/> by{" "}
-                        <a href="https://colorlib.com" target="_blank">
-                            Colorlib
+                        <a href="https://jamesie.com" target="_blank">
+                            Jamesie
                         </a>{" "}
                         &amp; distributed by{" "}
                         <a href="https://themewagon.com" target="_blank">
-                            ThemeWagon
+                            James Truong
                         </a>
                         {/* Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. */}
                     </p>

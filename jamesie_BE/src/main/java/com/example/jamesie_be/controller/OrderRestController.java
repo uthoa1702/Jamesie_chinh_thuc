@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 @RestController
 @CrossOrigin("*")
@@ -50,6 +52,7 @@ public class OrderRestController {
         Orders orders = new Orders(customers);
         iOrderService.save(orders);
         int count = 0;
+        double sum = 0;
         for (int i = 0; i < shoppingCartList.size(); i++) {
             if (shoppingCartList.get(i).getProducts().getAmount() >= shoppingCartList.get(i).getAmount()) {
                 Long change = shoppingCartList.get(i).getProducts().getAmount() - shoppingCartList.get(i).getAmount();
@@ -62,6 +65,8 @@ public class OrderRestController {
                 orderDetail.getProducts().setAmount(change);
                 iOrderDetailService.save(orderDetail);
                 iShoppingCartService.deleteProductInCart(getUserDetails().getUsername(), orderDetail.getProducts().getId());
+                sum = sum + orderDetail.getTotal();
+
             } else {
 
                 OrderDetail orderDetail = new OrderDetail(
@@ -73,14 +78,34 @@ public class OrderRestController {
                 iOrderDetailService.save(orderDetail);
                 iShoppingCartService.deleteProductInCart(getUserDetails().getUsername(), orderDetail.getProducts().getId());
                 count++;
+                sum = sum + orderDetail.getTotal();
             }
+
         }
         if (count > 0) {
-            orders.setStatus("Not fully success");
+            orders.setStatus("Pending");
+        } else {
+            orders.setStatus("Confirmed");
         }
-        else {
-            orders.setStatus("Successfully");
-        }
+        orders.setTotal(sum);
+        List<Orders> ordersList = iOrderService.getAll();
+        long code;
+        Random random = new Random();
+        long min = 10000; // Số nhỏ nhất có 5 chữ số
+        long max = 99999; // Số lớn nhất có 5 chữ số
+        boolean flag;
+        String orderCode;
+        do {
+            flag = true;
+            code = random.nextLong() % (max - min + 1) + min;
+             orderCode = "OD" + code;
+            for (int i = 0; i < ordersList.size(); i++) {
+                if (Objects.equals(ordersList.get(i).getOrderCode(), orderCode)) {
+                    flag = false;
+                }
+            }
+        } while (!flag);
+        orders.setOrderCode(orderCode);
         iOrderService.save(orders);
         return new ResponseEntity<>("Successfully", HttpStatus.OK);
     }

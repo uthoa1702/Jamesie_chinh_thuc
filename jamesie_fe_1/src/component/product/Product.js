@@ -15,7 +15,7 @@ export const Product = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [products, setProduct] = useState([])
     const [images, setImages] = useState([])
-    const [page, setPage] = useState(0)
+
     const [detail, setDetail] = useState('')
     const [sortBy, setSortBy] = useState('')
     const [price, setPrice] = useState('')
@@ -29,12 +29,20 @@ export const Product = () => {
 
     const [chooseSize, setChooseSize] = useState(0)
     const [chooseQuantity, setChooseQuantity] = useState(1)
+
+
+    const [page, setPage] = useState(0)
+    const [totalPage, setTotalPage] = useState(0)
+
+
+
     const dispatch = useDispatch();
 
     const getList = async () => {
         try {
             const res = await productService.getList(page, sortBy, price, color, type, productName)
-            await setProduct(res.content)
+            await setProduct( res.content)
+            await setTotalPage(res.totalPages)
 
             const typess = await productService.getType()
             await setTypes(typess)
@@ -135,24 +143,24 @@ export const Product = () => {
                                 All Products
                             </button>
 
-                            <button
-                                className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-                                data-filter=".bag"
-                            >
-                                Bag
-                            </button>
-                            <button
-                                className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-                                data-filter=".shoes"
-                            >
-                                Shoes
-                            </button>
-                            <button
-                                className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"
-                                data-filter=".watches"
-                            >
-                                Accessories
-                            </button>
+                            {/*<button*/}
+                            {/*    className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"*/}
+                            {/*    data-filter=".bag"*/}
+                            {/*>*/}
+                            {/*    Bag*/}
+                            {/*</button>*/}
+                            {/*<button*/}
+                            {/*    className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"*/}
+                            {/*    data-filter=".shoes"*/}
+                            {/*>*/}
+                            {/*    Shoes*/}
+                            {/*</button>*/}
+                            {/*<button*/}
+                            {/*    className="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-5"*/}
+                            {/*    data-filter=".watches"*/}
+                            {/*>*/}
+                            {/*    Accessories*/}
+                            {/*</button>*/}
                         </div>
                         <div className="flex-w flex-c-m m-tb-10">
                             <div
@@ -518,6 +526,17 @@ export const Product = () => {
 
                         }
                     </div>
+                    {/*{*/}
+                    {/*    totalPage === 0 || totalPage === page + 1 ? ''*/}
+
+                    {/*        :  <div className="row justify-content-center align-content-center">*/}
+                    {/*    <div className=""><button onClick={() => loadMore()} className="btn btn-dark hov-btn2">Load more</button></div>*/}
+
+                    {/*    </div>*/}
+                    {/*}*/}
+
+
+
 
 
                 </div>

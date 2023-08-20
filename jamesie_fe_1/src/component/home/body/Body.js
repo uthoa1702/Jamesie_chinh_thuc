@@ -3,10 +3,12 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import {Carousel, CarouselItem} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import {getAllCart} from "../../../redux/actions/cart";
+import {useDispatch} from "react-redux";
 
 
 export const Body = () => {
-
+    const dispatch = useDispatch();
     const settings = {
         dots: true,
         infinite: true,
@@ -24,6 +26,7 @@ export const Body = () => {
     };
     useEffect(() => {
         window.scrollTo(0, 0)
+
     },[])
     return (
 

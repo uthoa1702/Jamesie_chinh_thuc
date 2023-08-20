@@ -4,10 +4,13 @@ import {Field, Form, Formik} from "formik";
 import * as loginService from '../service/LoginService.js'
 import {useNavigate} from "react-router";
 import {toast, ToastContainer} from "react-toastify";
+import {getAllCart} from "../../redux/actions/cart";
+import {useDispatch} from "react-redux";
 
 
 export const Login = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     return (
         <>
             <div
@@ -44,6 +47,7 @@ export const Login = () => {
 
                                     await navigate("/")
                                     await window.location.reload()
+                                    await dispatch(getAllCart())
 
 
                                 }

@@ -35,6 +35,58 @@ public class Orders {
     private Customers customers;
 
     private String status;
+    private Double total;
+    private String orderCode;
+
+    public Orders(Customers customers, String status, Double total, String orderCode) {
+        this.customers = customers;
+        this.status = status;
+        this.total = total;
+        this.orderCode = orderCode;
+    }
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
+
+    public Orders(Long id, LocalDateTime createTime, LocalDateTime updateTime, boolean isDelete, Customers customers, String status, Double total, String orderCode) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.isDelete = isDelete;
+        this.customers = customers;
+        this.status = status;
+        this.total = total;
+        this.orderCode = orderCode;
+    }
+
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+
+    public Orders(Customers customers, String status, Double total) {
+        this.customers = customers;
+        this.status = status;
+        this.total = total;
+    }
+
+    public Orders(Long id, LocalDateTime createTime, LocalDateTime updateTime, boolean isDelete, Customers customers, String status, Double total) {
+        this.id = id;
+        this.createTime = createTime;
+        this.updateTime = updateTime;
+        this.isDelete = isDelete;
+        this.customers = customers;
+        this.status = status;
+        this.total = total;
+    }
 
     public Orders(String status) {
         this.status = status;

@@ -13,6 +13,7 @@ import {Footer} from "./component/home/footer/Footer";
 import {Blog} from "./component/blog/Blog";
 import Provider from "react-redux/es/components/Provider";
 import store from "./redux/store";
+import { ErrorAll} from "./component/error page/ErrorAll";
 
 function App() {
     return (
@@ -28,6 +29,7 @@ function App() {
                     <Route path='/shopping-cart' element={<ShoppingCart/>}/>
                     <Route path='/product' element={<Product/>}/>
                     <Route path='/blog' element={<Blog/>}/>
+                    <Route path='/error' element={<ErrorAll/>}/>
                 </Routes>
                 <Footer/>
                 <ToastContainer/>

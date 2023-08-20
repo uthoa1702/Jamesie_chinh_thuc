@@ -3,7 +3,7 @@ import axios from "axios";
 
 const token = localStorage.getItem("token");
 export const getList = async () => {
-    try {
+
         if (token != null){
             const res = await axios.get("http://localhost:8080/shopping/myCart",
                 {
@@ -20,9 +20,7 @@ export const getList = async () => {
             return res.data
         }
 
-    } catch (e) {
-        console.log(e)
-    }
+
 }
 
 export const getTotal = async () => {

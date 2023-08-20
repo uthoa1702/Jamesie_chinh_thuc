@@ -42,6 +42,7 @@ export const HomeHeader = () => {
     useEffect(() => {
         dispatch(getAllCart());
         setUsername(localStorage.getItem('username'))
+
     }, [localStorage.getItem("username")])
 
     const logOut = async () => {
@@ -233,16 +234,29 @@ export const HomeHeader = () => {
                             <ReceiptLongIcon/>
 
                         </div>
-                        <div
+                        {
+                            quantityCart !== null ? <div
 
-                            className="icon-header-item  hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti "
-                            data-notify={quantityCart}
-                        >
-                            <NavLink to='/shopping-cart' style={{color: 'black'}}>
-                                <ShoppingCartIcon/>
+                                className="icon-header-item  hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti "
+                                data-notify={quantityCart}
+                            >
+                                <NavLink to='/shopping-cart' style={{color: 'black'}}>
+                                    <ShoppingCartIcon/>
 
-                            </NavLink>
-                        </div>
+                                </NavLink>
+                            </div> :
+                                <div
+
+                                    className="icon-header-item  hov-cl1 trans-04 p-l-22 p-r-11  "
+
+                                >
+                                    <NavLink to='/shopping-cart' style={{color: 'black'}}>
+                                        <ShoppingCartIcon/>
+
+                                    </NavLink>
+                                </div>
+                        }
+
                         <a
                             href="#"
                             className="dis-block icon-header-item cl2 hov-cl1 trans-04 p-l-22 p-r-11 icon-header-noti"

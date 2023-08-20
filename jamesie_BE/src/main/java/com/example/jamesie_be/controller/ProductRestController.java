@@ -40,16 +40,16 @@ public class ProductRestController {
         switch (sortBy) {
 
             case "lowToHigh": {
-                pageable = PageRequest.of(page, 16, Sort.by(Sort.Order.asc("price")));
+                pageable = PageRequest.of(page, 8, Sort.by(Sort.Order.asc("price")));
                 break;
             }
             case "highToLow": {
-                pageable = PageRequest.of(page, 16, Sort.by(Sort.Order.desc("price")));
+                pageable = PageRequest.of(page, 8, Sort.by(Sort.Order.desc("price")));
                 break;
             }
 
             default: {
-                pageable = PageRequest.of(page, 16);
+                pageable = PageRequest.of(page, 8);
             }
 
         }
