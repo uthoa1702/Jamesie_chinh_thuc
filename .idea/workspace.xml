@@ -2,18 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="af8dfcf7-b34a-4d3a-bf1b-c288393e04e6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/DTO/IImageDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/DTO/ImageDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/Images.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/repository/IImageRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/ProductRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/ProductRestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/DTO/IProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/DTO/IProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/DTO/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/DTO/ProductDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/CustomerRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/OrderHistoryRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/OrderHistoryRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/OrderRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/controller/OrderRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/Orders.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/model/Orders.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/repository/IOrderDetailRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/repository/IOrderDetailRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/repository/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/IProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/IProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/impl/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/impl/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/IOrderDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/IOrderDetailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/impl/OrderDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_BE/src/main/java/com/example/jamesie_be/service/impl/OrderDetailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/component/home/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/component/home/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/component/home/header/HomeHeader.js" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/component/home/header/HomeHeader.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/component/login/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/component/login/Login.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/component/product/Product.js" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/component/product/Product.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/component/service/ProductService.js" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/component/service/ProductService.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jamesie_fe_1/src/component/shopping-cart/ShoppingCart.js" beforeDir="false" afterPath="$PROJECT_DIR$/jamesie_fe_1/src/component/shopping-cart/ShoppingCart.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,15 +30,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/jamesie_app_web/Jamesie_chinh_thuc/jamesie_BE",
-    "nodejs_package_manager_path": "npm"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/jamesie_app_web/Jamesie_chinh_thuc/jamesie_BE&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -46,6 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1691483529217</updated>
       <workItem from="1691483530478" duration="24000" />
+      <workItem from="1692623174680" duration="15000" />
     </task>
     <servers />
   </component>

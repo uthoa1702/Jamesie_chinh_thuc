@@ -91,8 +91,8 @@ public class OrderRestController {
         List<Orders> ordersList = iOrderService.getAll();
         long code;
         Random random = new Random();
-        long min = 10000; // Số nhỏ nhất có 5 chữ số
-        long max = 99999; // Số lớn nhất có 5 chữ số
+        long min = 10000000; // Số nhỏ nhất có 8 chữ số
+        long max = 99999999; // Số lớn nhất có 8 chữ số
         boolean flag;
         String orderCode;
         do {

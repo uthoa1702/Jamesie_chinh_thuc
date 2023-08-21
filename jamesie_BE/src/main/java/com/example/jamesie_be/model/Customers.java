@@ -5,6 +5,7 @@ import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE customers SET is_delete = 1 WHERE id = ?")
@@ -18,10 +19,10 @@ public class Customers {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String phone;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String mail;
 
 
@@ -31,6 +32,8 @@ public class Customers {
 
     private String country;
 
+    private LocalDate birthday;
+
     @OneToOne
     @JoinColumn(name = "account_id")
     private Accounts accounts;
@@ -39,6 +42,44 @@ public class Customers {
     private boolean isDelete;
 
     public Customers() {
+    }
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public Customers(String name, String phone, String mail, String address, String country, LocalDate birthday, Accounts accounts) {
+        this.name = name;
+        this.phone = phone;
+        this.mail = mail;
+        this.address = address;
+        this.country = country;
+        this.birthday = birthday;
+        this.accounts = accounts;
+    }
+
+    public Customers(Long id, String name, String phone, String mail, String address, String country, LocalDate birthday, Accounts accounts, boolean isDelete) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.mail = mail;
+        this.address = address;
+        this.country = country;
+        this.birthday = birthday;
+        this.accounts = accounts;
+        this.isDelete = isDelete;
     }
 
     public Customers(Long id) {

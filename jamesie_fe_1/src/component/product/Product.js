@@ -52,6 +52,9 @@ export const Product = () => {
             console.log(e)
         }
     }
+    const paginate = (page) => {
+        setPage(page)
+    }
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -107,6 +110,7 @@ export const Product = () => {
         setColor('')
         setPrice('')
         setSortBy('')
+        setPage(0)
         setFilter(!filter)
         setSearch(false)
     }
@@ -119,6 +123,8 @@ export const Product = () => {
         setSortBy('')
         setSearch(!search)
         setFilter(false)
+        setPage(0)
+
     }
 
     const customStyles = {
@@ -526,6 +532,40 @@ export const Product = () => {
 
                         }
                     </div>
+                    <div className='align-content-center justify-content-center row'>
+                        <ul className="pagination">
+                            <li hidden={page === 0}>
+                                <a    onClick={() => paginate(page - 1)} className='items'>&lt;</a>
+                            </li>
+                            {
+                                Array.from({length: totalPage}, (a, index) => index).map((pageNum) => (
+                                    <li key={pageNum}>
+                                        <a onClick={() => paginate(pageNum)} className={page === pageNum ? "items active" : "items"} >
+                                            {pageNum + 1}
+                                        </a>
+                                    </li>
+                                ))
+                            }
+                            {/*{*/}
+                            {/*    Array.from({length: totalPages}, (a, index) => index).map((pageNum) => (*/}
+                            {/*        <li className="page-item">*/}
+                            {/*            <button*/}
+                            {/*                className={page === pageNum ? "page-link-active" : "page-link-khanh"}*/}
+                            {/*                style={{border: "1px solid gray", borderRadius: "5px"}}*/}
+                            {/*                key={pageNum}*/}
+                            {/*                onClick={() => paginate(pageNum)}>*/}
+                            {/*                {pageNum + 1}*/}
+                            {/*            </button>*/}
+                            {/*        </li>*/}
+                            {/*    ))*/}
+                            {/*}*/}
+                            <li  hidden={page + 1 === totalPage}>
+                                <a    onClick={() => paginate(page + 1)} className='items'>&gt;</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
                     {/*{*/}
                     {/*    totalPage === 0 || totalPage === page + 1 ? ''*/}
 

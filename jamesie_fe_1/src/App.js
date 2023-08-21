@@ -14,6 +14,9 @@ import {Blog} from "./component/blog/Blog";
 import Provider from "react-redux/es/components/Provider";
 import store from "./redux/store";
 import { ErrorAll} from "./component/error page/ErrorAll";
+import {OrderHistory} from "./component/order history/OrderHistory";
+import {Information} from "./component/information/Information";
+import {Verification} from "./component/login/Verification";
 
 function App() {
     return (
@@ -30,6 +33,9 @@ function App() {
                     <Route path='/product' element={<Product/>}/>
                     <Route path='/blog' element={<Blog/>}/>
                     <Route path='/error' element={<ErrorAll/>}/>
+                    <Route path='/order-history' element={<OrderHistory/>}/>
+                    <Route path='/information' element={<Information/>}/>
+                    <Route path='/verification' element={<Verification/>}/>
                 </Routes>
                 <Footer/>
                 <ToastContainer/>

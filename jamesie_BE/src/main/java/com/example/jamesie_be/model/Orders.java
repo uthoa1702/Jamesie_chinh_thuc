@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
 @SQLDelete(sql = "UPDATE orders SET is_delete = 1 WHERE id = ?")
+
 @Where(clause = "is_delete = 0")
 @Entity
 public class Orders {

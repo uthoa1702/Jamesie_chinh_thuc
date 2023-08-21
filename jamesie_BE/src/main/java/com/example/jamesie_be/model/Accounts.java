@@ -16,11 +16,30 @@ public class Accounts {
 
     private Integer confirmationCode;
 
+    private boolean enable = false;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
     public Accounts() {
+    }
+
+    public Accounts(Long id, String name, String password, Integer confirmationCode, boolean enable, Role role) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.confirmationCode = confirmationCode;
+        this.enable = enable;
+        this.role = role;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 
     public Accounts(String name, String password, Integer confirmationCode, Role role) {

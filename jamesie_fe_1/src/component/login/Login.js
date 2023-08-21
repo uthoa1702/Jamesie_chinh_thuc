@@ -3,9 +3,10 @@ import React from "react";
 import {Field, Form, Formik} from "formik";
 import * as loginService from '../service/LoginService.js'
 import {useNavigate} from "react-router";
-import {toast, ToastContainer} from "react-toastify";
+import {toast} from "react-toastify";
 import {getAllCart} from "../../redux/actions/cart";
 import {useDispatch} from "react-redux";
+import {Link, NavLink} from "react-router-dom";
 
 
 export const Login = () => {
@@ -28,12 +29,12 @@ export const Login = () => {
                     }} onSubmit={(values) => {
                         const res = async () => {
                             try {
-                               const r = await loginService.login(values)
-                                if (r.data.token){
+                                const r = await loginService.login(values)
+                                if (r.data.token) {
 
-                                    await localStorage.setItem('token',r.data.token)
-                                    await localStorage.setItem('username',r.data.username)
-                                    await localStorage.setItem('role',r.data.role)
+                                    await localStorage.setItem('token', r.data.token)
+                                    await localStorage.setItem('username', r.data.username)
+                                    await localStorage.setItem('role', r.data.role)
                                     // const timeout = 10000; // 30 minutes in milliseconds
 
                                     // Xóa token sau khi thời gian chờ đã trôi qua
@@ -42,7 +43,6 @@ export const Login = () => {
                                     //     console.log('Token has been removed from local storage.');
                                     // }, timeout);
                                     // timeoutId();
-
 
 
                                     await navigate("/")
@@ -54,13 +54,12 @@ export const Login = () => {
                                 toast.success("Login successfully")
 
 
-
                             } catch (e) {
                                 toast.error("Wrong password or username")
                                 console.log(e)
                             }
                         }
-                      res()
+                        res()
                     }}>
                         <Form action="" style={{width: '100%', height: '500px', alignItems: 'center', display: 'flex'}}>
                             <div style={{width: "100%"}}>
@@ -81,12 +80,25 @@ export const Login = () => {
                                     <i className="zmdi zmdi-lock"/>
                                 </div>
 
+
                                 <div style={{justifyContent: 'center', display: 'flex'}}>
-                                    <button type="submit" className='btn btn-dark'>
+                                    <button type="submit" className='btn btn-dark '>
                                         Login
                                     </button>
                                 </div>
+                                {/*<div style={{justifyContent: 'center', display: 'flex'}} className="mt-1">*/}
 
+                                {/*    <button onClick={() => navigate("/register")} className='btn btn-outline-dark'>*/}
+                                {/*        Register*/}
+                                {/*    </button>*/}
+
+                                {/*</div>*/}
+
+                                <div className="row mt-lg-5"  >
+                                    <small>
+                                        Don't have an account? <NavLink to='/register'>Sign Up</NavLink>
+                                    </small>
+                                </div>
                             </div>
                         </Form>
 

@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 import {useDispatch} from "react-redux";
 import {getAllCart, updateCart} from "../../redux/actions/cart";
 import {useNavigate} from "react-router";
+import * as Swal from "sweetalert2";
 
 export const ShoppingCart = () => {
     const [listProduct, setListProduct] = useState()
@@ -50,18 +51,28 @@ export const ShoppingCart = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    const deleteCart = async (id) => {
+    const deleteCart = async (id, name) => {
         try {
-            await shoppingCartService.deleteCart(id);
+            const confirm = await Swal.fire({
+                icon: "warning",
+                title: `Remove`,
+                text:  `Are you sure to remove ${name}`,
+                confirmButtonText: "Delete",
+                confirmButtonColor: "red",
+                showConfirmButton: true,
+                showCancelButton: true
+            })
+            if (confirm.isConfirmed){
+                await shoppingCartService.deleteCart(id);
+            }
+
             await getList();
             await dispatch(getAllCart())
         } catch (e) {
             console.log(e)
         }
     }
-if(!listProduct ){
-    return null;
-}
+
     return (
         <>
             <form className="bg0 p-t-75 p-b-85">
@@ -88,7 +99,7 @@ if(!listProduct ){
                                                     <tr className="table_row">
                                                         <td className="column-1">
                                                             <div className="how-itemcart1"
-                                                                 onClick={() => deleteCart(value.products.id)}>
+                                                                 onClick={() => deleteCart(value.products.id, value.products.name)}>
                                                                 <img src={value.products.image1} alt="IMG"/>
                                                             </div>
                                                         </td>

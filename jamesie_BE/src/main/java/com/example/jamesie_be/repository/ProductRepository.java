@@ -32,7 +32,30 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
             "  AND p.name LIKE :productName\n" +
             "AND I.id IN (SELECT MIN(images.id) AS image1\n" +
             "               FROM images\n" +
-            "               GROUP BY images.product_id)", nativeQuery = true)
+            "               GROUP BY images.product_id)",
+            countQuery = "SELECT COUNT(*) FROM (" +
+                    "SELECT DISTINCT PC.name       AS color,\n" +
+                    "                p.name        AS name,\n" +
+                    "                p.price       AS price,\n" +
+                    "                p.description AS description,\n" +
+                    "                p.image1      AS image1,\n" +
+                    "                p.image2      AS image2,\n" +
+                    "                p.image3      AS image3,\n" +
+                    "                I.url         AS url \n" +
+                    "FROM products p\n" +
+                    "         INNER JOIN product_color PC ON p.product_color_id = PC.id\n" +
+                    "         INNER JOIN product_type PT ON p.product_type_id = PT.id\n" +
+                    "INNER JOIN images I ON p.id = I.product_id\n" +
+                    "WHERE p.is_delete = FALSE\n" +
+                    "  AND price BETWEEN :from AND :to\n" +
+                    "  AND PC.name LIKE :color \n" +
+                    "  AND PT.name LIKE :type\n" +
+                    "  AND p.name LIKE :productName\n" +
+                    "AND I.id IN (SELECT MIN(images.id) AS image1\n" +
+                    "               FROM images\n" +
+                    "               GROUP BY images.product_id)" +
+                    " ) as source",
+            nativeQuery = true)
     Page<IProductDTO> getProducts(Pageable pageable,
 
                                   @Param("from") double from,
