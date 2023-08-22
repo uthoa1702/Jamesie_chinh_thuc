@@ -59,7 +59,9 @@
 }
 
 .carousel-inner .carousel-item {
-    transition: transform 1s ease-in-out;
+    /*transition: transform 1s ease-in-out;*/
+    transition: border-bottom-color ease-out;
+    /*transition: ease-in ease-out;*/
 }
 
 .carousel-item-next,
@@ -83,4 +85,5 @@
 
 span{
     color: red;
+    font-size: small;
 }

@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/products")
-public class ProductRestController {
+public  class ProductRestController {
     @Autowired
     IProductService iProductService;
 

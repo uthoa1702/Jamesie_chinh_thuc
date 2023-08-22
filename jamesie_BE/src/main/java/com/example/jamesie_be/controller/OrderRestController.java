@@ -6,6 +6,7 @@ import com.example.jamesie_be.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,6 +46,7 @@ public class OrderRestController {
 
     @PostMapping("/createOrder")
     @Transactional
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> createOrder() {
         List<ShoppingCart> shoppingCartList = iShoppingCartService.findByUsername(getUserDetails().getUsername());
 
@@ -98,13 +100,13 @@ public class OrderRestController {
         do {
             flag = true;
             code = random.nextLong() % (max - min + 1) + min;
-             orderCode = "OD" + code;
+             orderCode = "OD-" + code;
             for (int i = 0; i < ordersList.size(); i++) {
                 if (Objects.equals(ordersList.get(i).getOrderCode(), orderCode)) {
                     flag = false;
                 }
             }
-        } while (!flag);
+        } while (!flag || code <= 0);
         orders.setOrderCode(orderCode);
         iOrderService.save(orders);
         return new ResponseEntity<>("Successfully", HttpStatus.OK);

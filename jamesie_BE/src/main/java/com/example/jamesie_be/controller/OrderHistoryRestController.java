@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,6 +37,7 @@ public class OrderHistoryRestController {
     }
 
     @GetMapping("/getHistoryList")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getlist() {
         Customers customers = iCustomerService.findByUsername(getUserDetails().getUsername());
         List<Orders> ordersList =  iOrderService.getHistoryByCustomer(customers);
@@ -43,6 +45,7 @@ public class OrderHistoryRestController {
     }
 
     @GetMapping("/orderDetail")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getDetail(@RequestParam("orderId")Long orderId){
 
         List<OrderDetail>orderDetailList = iOrderDetailService.findByIdOrder(orderId);

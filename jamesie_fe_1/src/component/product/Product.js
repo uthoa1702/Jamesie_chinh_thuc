@@ -54,6 +54,7 @@ export const Product = () => {
     }
     const paginate = (page) => {
         setPage(page)
+        window.scrollTo(0, 0)
     }
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -478,7 +479,7 @@ export const Product = () => {
                     </div>
                     <div className="row isotope-grid">
                         {
-                            products ? (products.map((value, index) => (
+                            products?.length > 0 ? (products.map((value, index) => (
 
 
                                     <div onClick={() => openModal(value.name)}
@@ -495,8 +496,8 @@ export const Product = () => {
                                             </div>
                                             <div className="block2-txt flex-w flex-t p-t-14">
                                                 <div className="block2-txt-child1 flex-col-l ">
-                                                    <a onClick={() => openModal(value.name)} href={''}
-                                                       style={{color: 'black', fontSize: '20px'}}
+                                                    <a onClick={() => openModal(value.name)} 
+                                                       style={{color: 'black', fontSize: '20px', cursor:"pointer"}}
                                                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                                                     >
                                                         {value.name}
@@ -528,42 +529,45 @@ export const Product = () => {
 
                                 )
                                 )) :
-                                <div><p>ljkhdsgf</p></div>
+                                <div style={{alignContent: 'center'}} ><h3 style={{color:'red'}} >Product not found</h3></div>
 
                         }
                     </div>
-                    <div className='align-content-center justify-content-center row'>
-                        <ul className="pagination">
-                            <li hidden={page === 0}>
-                                <a    onClick={() => paginate(page - 1)} className='items'>&lt;</a>
-                            </li>
-                            {
-                                Array.from({length: totalPage}, (a, index) => index).map((pageNum) => (
-                                    <li key={pageNum}>
-                                        <a onClick={() => paginate(pageNum)} className={page === pageNum ? "items active" : "items"} >
-                                            {pageNum + 1}
-                                        </a>
-                                    </li>
-                                ))
-                            }
-                            {/*{*/}
-                            {/*    Array.from({length: totalPages}, (a, index) => index).map((pageNum) => (*/}
-                            {/*        <li className="page-item">*/}
-                            {/*            <button*/}
-                            {/*                className={page === pageNum ? "page-link-active" : "page-link-khanh"}*/}
-                            {/*                style={{border: "1px solid gray", borderRadius: "5px"}}*/}
-                            {/*                key={pageNum}*/}
-                            {/*                onClick={() => paginate(pageNum)}>*/}
-                            {/*                {pageNum + 1}*/}
-                            {/*            </button>*/}
-                            {/*        </li>*/}
-                            {/*    ))*/}
-                            {/*}*/}
-                            <li  hidden={page + 1 === totalPage}>
-                                <a    onClick={() => paginate(page + 1)} className='items'>&gt;</a>
-                            </li>
-                        </ul>
-                    </div>
+                    {
+                        products.length > 0 ? <div className='align-content-center justify-content-center row'>
+                            <ul className="pagination">
+                                <li hidden={page === 0}>
+                                    <a    onClick={() => paginate(page - 1)} className='items'>&lt;</a>
+                                </li>
+                                {
+                                    Array.from({length: totalPage}, (a, index) => index).map((pageNum) => (
+                                        <li key={pageNum}>
+                                            <a onClick={() => paginate(pageNum)} className={page === pageNum ? "items active" : "items"} >
+                                                {pageNum + 1}
+                                            </a>
+                                        </li>
+                                    ))
+                                }
+                                {/*{*/}
+                                {/*    Array.from({length: totalPages}, (a, index) => index).map((pageNum) => (*/}
+                                {/*        <li className="page-item">*/}
+                                {/*            <button*/}
+                                {/*                className={page === pageNum ? "page-link-active" : "page-link-khanh"}*/}
+                                {/*                style={{border: "1px solid gray", borderRadius: "5px"}}*/}
+                                {/*                key={pageNum}*/}
+                                {/*                onClick={() => paginate(pageNum)}>*/}
+                                {/*                {pageNum + 1}*/}
+                                {/*            </button>*/}
+                                {/*        </li>*/}
+                                {/*    ))*/}
+                                {/*}*/}
+                                <li  hidden={page + 1 === totalPage}>
+                                    <a    onClick={() => paginate(page + 1)} className='items'>&gt;</a>
+                                </li>
+                            </ul>
+                        </div> : ''
+                    }
+
 
 
                     {/*{*/}

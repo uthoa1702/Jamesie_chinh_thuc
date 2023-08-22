@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +42,7 @@ public class ShoppingCartRestController {
 
     @Transactional
     @PostMapping("/add")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> addToCart(@RequestParam("size") Long sizeId,
                                        @RequestParam("productName") String productName,
 
@@ -64,6 +66,7 @@ public class ShoppingCartRestController {
     }
 
     @GetMapping("/myCart")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getMyCart() {
         List<ShoppingCart> shoppingCartList = iShoppingCartService.findByUsername(getUserDetails().getUsername());
         if (shoppingCartList.isEmpty()) {
@@ -75,6 +78,7 @@ public class ShoppingCartRestController {
     }
 
     @GetMapping("/total")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getTotal() {
         Double total = iShoppingCartService.getToTal(getUserDetails().getUsername());
         return new ResponseEntity<>(total, HttpStatus.OK);
@@ -82,6 +86,7 @@ public class ShoppingCartRestController {
     }
 
     @PostMapping("/changeQuantity")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public void change(
             @RequestParam("productId") Long productId,
             @RequestParam("addOrMinus") String addOrMinus, HttpServletRequest httpServletRequest) {
@@ -196,6 +201,7 @@ public class ShoppingCartRestController {
     }
 
     @PostMapping("/delete")
+    @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public void delete(@RequestParam("productId") Long productId) {
         iShoppingCartService.deleteProductInCart(getUserDetails().getUsername(),productId);
     }

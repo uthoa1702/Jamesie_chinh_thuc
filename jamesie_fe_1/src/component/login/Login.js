@@ -1,5 +1,5 @@
 import '../login/css/style.css'
-import React from "react";
+import React, {useEffect} from "react";
 import {Field, Form, Formik} from "formik";
 import * as loginService from '../service/LoginService.js'
 import {useNavigate} from "react-router";
@@ -12,6 +12,12 @@ import {Link, NavLink} from "react-router-dom";
 export const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if (token){
+            navigate("/")
+        }
+    },[])
     return (
         <>
             <div

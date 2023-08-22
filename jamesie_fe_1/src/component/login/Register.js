@@ -1,9 +1,10 @@
 import '../login/css/style.css'
 import React, {useEffect, useState} from "react";
-import {Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, Form, Formik} from "formik";
 import axios from "axios";
 import {toast} from "react-toastify";
 import {useNavigate} from "react-router";
+import * as yup from 'yup'
 
 
 export const Register = () => {
@@ -18,6 +19,13 @@ export const Register = () => {
     //     passwordInputHandler(confirmPassword)
     // }, [password1])
     const navigate = useNavigate();
+    const [submitting , setSubmitting] = useState(true)
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if (token){
+            navigate("/")
+        }
+    },[])
     return (
 
         <>
@@ -39,7 +47,19 @@ export const Register = () => {
                         phone: '',
                         confirmPassword: '',
                         password: ''
-                    }} onSubmit={(values) => {
+                    }} validationSchema={yup.object({
+                        name: yup.string().required("This is required"),
+                        mail: yup.string().required("This is required"),
+                        username: yup.string().required("This is required"),
+                        country: yup.string().required("This is required"),
+                        address: yup.string().required("This is required"),
+                        phone: yup.number().required("This is required"),
+                        password: yup.string().required("This is required"),
+                        confirmPassword: yup.string().required("This is required"),
+                    })}
+                            onSubmit={(values) => {
+                                setSubmitting(false)
+
                         values = {
                             ...values,
                             accounts: {
@@ -50,10 +70,12 @@ export const Register = () => {
                         const res = async () => {
                             try {
                                 const r = await axios.post("http://localhost:8080/customer/createCustomer?password=" + values.password + "&confirmPassword=" + values.confirmPassword, values)
+
                                 toast.success("Please check your mail to get code")
                                 await navigate("/verification")
                             }catch (e) {
                                 toast.error(e.response.data)
+                                setSubmitting(true)
                             }
 
                         }
@@ -64,14 +86,18 @@ export const Register = () => {
                         <Form action="" style={{width: '100%'}}>
                             <h3>Registration</h3>
                             <div className="form-wrapper">
+                                <ErrorMessage name="name"  component="span"/>
                                 <Field name='name' type="text" placeholder="Full Name" className="form-control"/>
+
 
                             </div>
                             <div className="form-wrapper">
+                                <ErrorMessage name="username"  component="span"/>
                                 <Field name='username' type="text" placeholder="Username" className="form-control"/>
                                 <i className="zmdi zmdi-account"/>
                             </div>
                             <div className="form-wrapper">
+                                <ErrorMessage name="mail"  component="span"/>
                                 <Field
                                     name='mail'
                                     type="text"
@@ -80,18 +106,27 @@ export const Register = () => {
                                 />
                                 <i className="zmdi zmdi-email"/>
                             </div>
+                            <ErrorMessage name="birthday"  component="span"/>
+                            <ErrorMessage name="phone"  component="span"/>
                             <div className="form-group">
+
                                 <Field name='phone' type="text" placeholder="Phone" className="form-control"/>
+
                                 <Field name='birthday' type="date" placeholder="Birthday " className="form-control"/>
 
                             </div>
+                            <ErrorMessage name="address"  component="span"/>
                             <div className="form-group">
+
                                 <Field name='country' type="text" placeholder="Country" className="form-control"/>
+
                                 <Field name='address' type="text" placeholder="Address" className="form-control"/>
 
                             </div>
 
+                            <ErrorMessage name="confirmPassword"  component="span"/>
                             <div className="form-group">
+
                                 <Field
                                     name="password"
                                     type="password"
@@ -99,6 +134,7 @@ export const Register = () => {
                                     className="form-control"
                                     // onChange={(e) => setPassword1(e.target.value)}
                                 />
+
                                 <Field
                                     name="confirmPassword"
                                     // onChange={(v) => passwordInputHandler(v.target.value)}
@@ -113,11 +149,14 @@ export const Register = () => {
                             {/*{matchError &&*/}
                             {/*<small className='row align-content-end justify-content-end mb-2' style={{color: 'red'}}>Password*/}
                             {/*    incorrect!</small>}*/}
-                            <div style={{justifyContent: 'center', display: 'flex'}}>
-                                <button type={"submit"} className='btn btn-dark'>
-                                    Register
-                                </button>
-                            </div>
+                            {
+                                submitting === true ? <div style={{justifyContent: 'center', display: 'flex'}}>
+                                    <button type={"submit"} className='btn btn-dark'>
+                                        Register
+                                    </button>
+                                </div> : ''
+                            }
+
                         </Form>
                     </Formik>
                 </div>

@@ -14,7 +14,7 @@ export const OrderHistory = () => {
         try {
             const res = await orderHistoryService.getList();
             setOrders(res)
-        }catch (e) {
+        } catch (e) {
             navigate("/")
         }
 
@@ -24,7 +24,7 @@ export const OrderHistory = () => {
             const res = await orderHistoryService.getListDetail(id)
             await setOrderDetail(res)
 
-        }catch (e) {
+        } catch (e) {
             navigate("/")
         }
     }
@@ -58,7 +58,7 @@ export const OrderHistory = () => {
                                 <div><h3>Order history</h3></div>
                                 <table className="table-shopping-cart  table-striped table-hover">
                                     <tbody>
-                                    <tr className="table_head">
+                                    <tr className="table_head table-dark">
                                         <th className="column-1">No.</th>
                                         <th className="column-2">Order Code</th>
                                         <th className="column-3">Create At</th>
@@ -67,28 +67,31 @@ export const OrderHistory = () => {
                                         <th className="column-5">Detail</th>
                                     </tr>
                                     {
-                                        orders ? orders.map((value, index) => (
+                                        orders?.length > 0 ? orders.map((value, index) => (
                                             <tr className="table_row" key={index}>
                                                 <td className="column-1">
                                                     {index + 1}
                                                 </td>
                                                 <td className="column-2">{value.orderCode}</td>
                                                 <td className="column-3">{value.createTime}</td>
-                                                <td className="column-5">$ {value.total}</td>
+                                                <td className="column-4">$ {value.total.toFixed(2)}</td>
                                                 {
-                                                    value.status === "Confirmed" ? <td className="column-4 ">
+                                                    value.status === "Confirmed" ? <td className="column-5 ">
                                                         <div className="status confirmed">{value.status}</div>
-                                                    </td> : <td className="column-4">
+                                                    </td> : <td className="column-5">
                                                         <div className="status pending">{value.status}</div>
                                                     </td>
                                                 }
 
 
-                                                <td className="column-5"><InfoRoundedIcon onClick={() => isModalOpen(value.id)}
-                                                                                          style={{cursor: "pointer", color:"blue"}}/>
+                                                <td className="column-5"><InfoRoundedIcon
+                                                    onClick={() => isModalOpen(value.id)}
+                                                    style={{cursor: "pointer", color: "blue"}}/>
                                                 </td>
                                             </tr>
-                                        )) : <div className='align-content-center'>Not found</div>
+                                        )) : <tr className="" style={{height:'170px'}} >
+                                            <th className="align-content-center" colSpan={6} ><div className="justify-content-center"  style={{color:'red',textAlign:"center"}}>Please buy something to see order history ^^'</div></th>
+                                        </tr>
                                     }
 
 
@@ -122,7 +125,7 @@ export const OrderHistory = () => {
                                 </td>
                                 <td className="column-2">
                                     <div className="how-itemcart1"
-                                        >
+                                    >
                                         <img src={value.products.image1} alt="IMG"/>
                                     </div>
                                 </td>
@@ -136,8 +139,6 @@ export const OrderHistory = () => {
                                         <div className="status pending">{value.status}</div>
                                     </td>
                                 }
-
-
 
 
                             </tr>

@@ -218,7 +218,7 @@ export const HomeHeader = () => {
                                     <a>About</a>
                                 </li>
                                 <li>
-                                    <a>Contact</a>
+                                    <NavLink to={'/contact'}>Contact</NavLink>
                                 </li>
                             </ul>
                         </div>

@@ -42,7 +42,9 @@ public class Customers {
     private boolean isDelete;
 
     public Customers() {
+
     }
+
 
     public boolean isDelete() {
         return isDelete;
@@ -61,6 +63,7 @@ public class Customers {
     }
 
     public Customers(String name, String phone, String mail, String address, String country, LocalDate birthday, Accounts accounts) {
+
         this.name = name;
         this.phone = phone;
         this.mail = mail;

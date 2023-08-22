@@ -17,6 +17,7 @@ import { ErrorAll} from "./component/error page/ErrorAll";
 import {OrderHistory} from "./component/order history/OrderHistory";
 import {Information} from "./component/information/Information";
 import {Verification} from "./component/login/Verification";
+import {Contact} from "./component/contact/Contact";
 
 function App() {
     return (
@@ -34,8 +35,9 @@ function App() {
                     <Route path='/blog' element={<Blog/>}/>
                     <Route path='/error' element={<ErrorAll/>}/>
                     <Route path='/order-history' element={<OrderHistory/>}/>
-                    <Route path='/information' element={<Information/>}/>
+                    <Route path='/information' element={<Information />}/>
                     <Route path='/verification' element={<Verification/>}/>
+                    <Route path='/contact' element={<Contact/>}/>
                 </Routes>
                 <Footer/>
                 <ToastContainer/>

@@ -26,8 +26,18 @@ export const Body = () => {
     };
     useEffect(() => {
         window.scrollTo(0, 0)
-
+         dispatch(getAllCart())
     },[])
+    const settingsS = {
+        dots: true,
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        appendDots: (dots) => {
+            return <ul style={{ margin: "0px" }}>{dots}</ul>
+        },
+    }
     return (
 
         <>
@@ -36,7 +46,8 @@ export const Body = () => {
             <section className="section-slide">
                 <div className="  wrap-slick1 rs1-slick1">
                     <div className="">
-                        <Carousel interval={2000} fade
+                        <Carousel {...settingsS} interval={3000}  nextIcon={false}
+                        prevIcon={false} nextLabel={false} prevLabel={false}
                         >
 
                             <CarouselItem className='slider1 '>
@@ -73,7 +84,7 @@ export const Body = () => {
                                     </div>
                                 </div>
                             </CarouselItem>
-                            <CarouselItem className=" slider2 custom-slide ">
+                            <CarouselItem className=" slider2 custom-slide " >
                                 <div
                                     className="item-slick1 bg-img1 "
                                 >

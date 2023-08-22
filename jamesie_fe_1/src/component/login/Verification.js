@@ -1,5 +1,5 @@
 import '../login/css/style.css'
-import React from "react";
+import React, {useEffect} from "react";
 import {Field, Form, Formik} from "formik";
 import * as loginService from '../service/LoginService.js'
 import {useNavigate} from "react-router";
@@ -7,11 +7,18 @@ import {toast} from "react-toastify";
 import {getAllCart} from "../../redux/actions/cart";
 import {useDispatch} from "react-redux";
 import {Link, NavLink} from "react-router-dom";
+import axios from "axios";
 
 
 export const Verification = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if (token){
+            navigate("/")
+        }
+    },[])
     return (
         <>
             <div
@@ -28,7 +35,13 @@ export const Verification = () => {
 
                     }} onSubmit={(values) => {
                         const res = async () => {
-
+                            try {
+                                const r = await axios.post("http://localhost:8080/customer/Verification?confirmationCode=" + values.confirmationCode)
+                                toast.success(r.data)
+                                navigate("/login")
+                            }catch (e) {
+                                toast.success(e.response.data)
+                            }
                         }
                         res()
                     }}>

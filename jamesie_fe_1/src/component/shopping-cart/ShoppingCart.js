@@ -13,6 +13,7 @@ export const ShoppingCart = () => {
     const token = localStorage.getItem("token");
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     useEffect(() => {
         window.scrollTo(0, 0)
     }, [])
@@ -94,7 +95,7 @@ export const ShoppingCart = () => {
                                         </tr>
 
                                 {
-                                    listProduct ? listProduct.map(value => (
+                                    listProduct?.length > 0 ? listProduct.map(value => (
 
                                                     <tr className="table_row">
                                                         <td className="column-1">
@@ -235,6 +236,7 @@ export const ShoppingCart = () => {
 
                                                 </div>
                                                 : <button
+                                                onClick={()=>navigate("/login")}
                                                     className="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
                                                     Login to check out
                                                 </button>
