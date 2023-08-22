@@ -205,6 +205,4 @@ public class ShoppingCartRestController {
     public void delete(@RequestParam("productId") Long productId) {
         iShoppingCartService.deleteProductInCart(getUserDetails().getUsername(),productId);
     }
-
-
 }

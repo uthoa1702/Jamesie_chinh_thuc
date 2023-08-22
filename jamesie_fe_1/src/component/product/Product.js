@@ -496,7 +496,7 @@ export const Product = () => {
                                             </div>
                                             <div className="block2-txt flex-w flex-t p-t-14">
                                                 <div className="block2-txt-child1 flex-col-l ">
-                                                    <a onClick={() => openModal(value.name)} 
+                                                    <a onClick={() => openModal(value.name)}
                                                        style={{color: 'black', fontSize: '20px', cursor:"pointer"}}
                                                        className="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6"
                                                     >
