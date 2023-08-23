@@ -58,6 +58,7 @@ export const Product = () => {
     }
     useEffect(() => {
         window.scrollTo(0, 0)
+        document.title = "Shopping"
     }, [])
 
     useEffect(() => {

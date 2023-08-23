@@ -27,8 +27,8 @@ export const ShoppingCart = () => {
             await dispatch(getAllCart())
         } catch (e) {
             console.log(e)
-            await dispatch(updateCart(e.response.data.length))
-            await setListProduct(e.response.data)
+            await dispatch(updateCart(e.response?.length))
+            await setListProduct(e.response?.data)
 
         }
     }

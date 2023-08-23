@@ -1,4 +1,9 @@
+import {useEffect} from "react";
+
 export const Contact = () => {
+    useEffect(()=>{
+        document.title = "Contact"
+    },[])
     return (
         <>
             {/* Title page */}

@@ -3,6 +3,7 @@ import {useEffect} from "react";
 export const Blog = () => {
     useEffect(() => {
         window.scrollTo(0, 0)
+        document.title = "Blog"
     },[])
 
     return (

@@ -24,7 +24,7 @@ export const getList = async () => {
 }
 
 export const getTotal = async () => {
-    try {
+
         if (token !== null){
             const res = await axios.get("http://localhost:8080/shopping/total",
                 {
@@ -40,9 +40,7 @@ export const getTotal = async () => {
                 {withCredentials: true})
             return res.data
         }
-    } catch (e) {
-        console.log(e)
-    }
+
 }
 export const addAndMinus = async (productId, addOrMinus) => {
     try {

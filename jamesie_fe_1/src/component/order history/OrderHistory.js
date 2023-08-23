@@ -31,6 +31,7 @@ export const OrderHistory = () => {
 
     useEffect(() => {
         fetchApi()
+        document.title = "Order history"
     }, [])
     const isModalOpen = (id) => {
         setModal(!modal)

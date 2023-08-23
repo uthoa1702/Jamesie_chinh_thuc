@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 
 export const Body = () => {
     const dispatch = useDispatch();
+
     const settings = {
         dots: true,
         infinite: true,
@@ -27,6 +28,7 @@ export const Body = () => {
     useEffect(() => {
         window.scrollTo(0, 0)
          dispatch(getAllCart())
+
     },[])
     const settingsS = {
         dots: true,
@@ -165,7 +167,7 @@ export const Body = () => {
                             <div className="block1 wrap-pic-w">
                                 <img src="images/banner-04.jpg" alt="IMG-BANNER"/>
                                 <a
-                                    href="product.html"
+
                                     className="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3"
                                 >
                                     <div className="block1-txt-child1 flex-col-l">
@@ -177,7 +179,7 @@ export const Body = () => {
               </span>
                                     </div>
                                     <div className="block1-txt-child2 p-b-4 trans-05">
-                                        <div className="block1-link stext-101 cl0 trans-09">Shop Now</div>
+                                        <Link to="/product" className="block1-link stext-101 cl0 trans-09">Shop Now</Link>
                                     </div>
                                 </a>
                             </div>
@@ -187,7 +189,7 @@ export const Body = () => {
                             <div className="block1 wrap-pic-w">
                                 <img src="images/banner-02.jpg" alt="IMG-BANNER"/>
                                 <a
-                                    href="product.html"
+
                                     className="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3"
                                 >
                                     <div className="block1-txt-child1 flex-col-l">
@@ -197,7 +199,7 @@ export const Body = () => {
               </span>
                                     </div>
                                     <div className="block1-txt-child2 p-b-4 trans-05">
-                                        <div className="block1-link stext-101 cl0 trans-09">Shop Now</div>
+                                        <Link className="block1-link stext-101 cl0 trans-09" to="/product">Shop Now</Link>
                                     </div>
                                 </a>
                             </div>
@@ -207,7 +209,7 @@ export const Body = () => {
                             <div className="block1 wrap-pic-w">
                                 <img src="images/banner-06.jpg" alt="IMG-BANNER"/>
                                 <a
-                                    href="product.html"
+
                                     className="block1-txt ab-t-l s-full flex-col-l-sb p-lr-38 p-tb-34 trans-03 respon3"
                                 >
                                     <div className="block1-txt-child1 flex-col-l">
@@ -215,7 +217,7 @@ export const Body = () => {
                                         <span className="block1-info stext-102 trans-04">New Trend</span>
                                     </div>
                                     <div className="block1-txt-child2 p-b-4 trans-05">
-                                        <div className="block1-link stext-101 cl0 trans-09">Shop Now</div>
+                                        <Link to="/product" className="block1-link stext-101 cl0 trans-09">Shop Now</Link>
                                     </div>
                                 </a>
                             </div>

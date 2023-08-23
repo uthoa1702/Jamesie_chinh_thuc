@@ -13,6 +13,7 @@ export const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(()=>{
+        document.title = "Login"
         const token = localStorage.getItem("token")
         if (token){
             navigate("/")

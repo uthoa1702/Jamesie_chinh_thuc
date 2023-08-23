@@ -15,6 +15,7 @@ export const Verification = () => {
     const dispatch = useDispatch();
     useEffect(()=>{
         const token = localStorage.getItem("token")
+        document.title = "Verification"
         if (token){
             navigate("/")
         }

@@ -22,6 +22,7 @@ export const Register = () => {
     const [submitting , setSubmitting] = useState(true)
     useEffect(()=>{
         const token = localStorage.getItem("token")
+        document.title = "Register"
         if (token){
             navigate("/")
         }

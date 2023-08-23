@@ -16,6 +16,7 @@ navigate("/")
     }
     useEffect(() => {
         fetchAPI()
+        document.title = "Information"
     },[])
     return(
         <>
