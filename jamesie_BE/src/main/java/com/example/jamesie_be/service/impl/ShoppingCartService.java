@@ -38,7 +38,7 @@ public class ShoppingCartService implements IShoppingCartService {
     @Override
     public ResponseEntity<?> add(Long sizeId, Products products, Customers customers, Integer quantity) {
         if (sizeId != null && products.getName() != null && quantity > 0) {
-            if (products.getAmount() > quantity) {
+            if (products.getAmount() >= quantity) {
                 ShoppingCart shoppingCart = iShoppingCartRepository.findByCustomersAndProducts(customers, products);
 
                 if (shoppingCart != null) {
