@@ -69,9 +69,7 @@ public class ShoppingCartRestController {
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER', 'ROLE_ADMIN')")
     public ResponseEntity<?> getMyCart() {
         List<ShoppingCart> shoppingCartList = iShoppingCartService.findByUsername(getUserDetails().getUsername());
-        if (shoppingCartList.isEmpty()) {
-            return new ResponseEntity<>(shoppingCartList, HttpStatus.BAD_REQUEST);
-        }
+
 
         return new ResponseEntity<>(shoppingCartList, HttpStatus.OK);
 

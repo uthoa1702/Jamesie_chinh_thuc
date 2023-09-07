@@ -107,6 +107,7 @@ public  class ProductRestController {
     @GetMapping("/getSize")
     public ResponseEntity<List<ProductSize>> getSize(@RequestParam("productName")String productName) {
         List<ProductSize> productSizes = iProductService.getSize(productName);
+
         return new ResponseEntity<>(productSizes, HttpStatus.OK);
     }
 

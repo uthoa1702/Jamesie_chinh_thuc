@@ -115,8 +115,8 @@ export const OrderHistory = () => {
                         <th className="column-2">Image</th>
                         <th className="column-3">Name</th>
                         <th className="column-4">Quantity</th>
+                        <th className="column-5">Price</th>
                         <th className="column-5">Status</th>
-                        <th className="column-5">Detail</th>
                     </tr>
                     {
                         orderDetail ? orderDetail.map((value, index) => (

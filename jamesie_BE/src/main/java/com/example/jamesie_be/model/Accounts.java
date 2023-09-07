@@ -32,6 +32,7 @@ public class Accounts {
         this.confirmationCode = confirmationCode;
         this.enable = enable;
         this.role = role;
+
     }
 
     public boolean isEnable() {

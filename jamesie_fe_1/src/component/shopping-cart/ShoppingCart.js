@@ -48,9 +48,7 @@ export const ShoppingCart = () => {
         getList()
         // dispatch(getAllCart())
     }, [total])
-    useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+
 
     const deleteCart = async (id, name) => {
         try {
@@ -65,6 +63,7 @@ export const ShoppingCart = () => {
             })
             if (confirm.isConfirmed){
                 await shoppingCartService.deleteCart(id);
+
             }
 
             await getList();
@@ -220,9 +219,14 @@ export const ShoppingCart = () => {
                                                             amount={total?.toFixed(2)}
                                                             // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
                                                             onSuccess={async (details, data) => {
-                                                                await toast.success("Transaction completed by " + details.payer.name.given_name);
+
                                                                 const res = await shoppingCartService.orders()
                                                                 await getList()
+                                                                await dispatch(getAllCart())
+                                                                await navigate("/order-history")
+                                                                await window.location.reload()
+                                                                // await toast.success("Transaction completed by " + details.payer.name.given_name);
+
                                                                 // OPTIONAL: Call your server to save the transaction
                                                                 return fetch("/paypal-transaction-complete", {
                                                                     method: "post",
