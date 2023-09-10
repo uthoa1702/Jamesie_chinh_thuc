@@ -15,6 +15,6 @@ public interface ISizeRepository extends JpaRepository<ProductSize, Long> {
     @Query(value = "SELECT *\n" +
             "FROM product_size\n" +
             "         INNER JOIN products P ON product_size.id = P.product_size_id\n" +
-            "WHERE p.name = :productName",nativeQuery = true)
+            "WHERE p.name = :productName AND p.amount > 0",nativeQuery = true)
     List<ProductSize> getSize(@Param("productName") String productName);
 }
